@@ -2,17 +2,29 @@
 
 void StateMachine::begin() {
     input.begin();
-    leds.begin();
+    ampel.begin();
     currentState = AmpelState::IDLE;
 }
 
 void StateMachine::update() {
-    // Platzhalter für Haupt-Logik
+    input.update();
+    ampel.update();
+    
+    // Handle input events
+    if (input.isStartPressed()) {
+        handleStartEvent();
+    }
+    if (input.isResetPressed()) {
+        handleResetEvent();
+    }
+    if (input.isFalseStartDetected()) {
+        handleFalseStartEvent();
+    }
 }
 
 void StateMachine::reset() {
     currentState = AmpelState::IDLE;
-    // LEDs ausschalten etc.
+    ampel.reset();
 }
 
 void StateMachine::setState(AmpelState state) {
@@ -21,4 +33,22 @@ void StateMachine::setState(AmpelState state) {
 
 AmpelState StateMachine::getState() const {
     return currentState;
+}
+
+void StateMachine::handleStartEvent() {
+    if (currentState == AmpelState::IDLE) {
+        currentState = AmpelState::STARTSEQUENCE;
+        ampel.startSequence();
+    }
+}
+
+void StateMachine::handleResetEvent() {
+    reset();
+}
+
+void StateMachine::handleFalseStartEvent() {
+    if (currentState == AmpelState::STARTSEQUENCE) {
+        currentState = AmpelState::FRUEHSTART;
+        // Frühstart handling wird später implementiert
+    }
 }

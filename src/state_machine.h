@@ -1,6 +1,6 @@
 #pragma once
 #include "input_handler.h"
-#include "led_controller.h"
+#include "ampel_controller.h"
 
 enum class AmpelState {
     IDLE,
@@ -19,9 +19,12 @@ public:
     void reset();
     void setState(AmpelState state);
     AmpelState getState() const;
+    void handleStartEvent();
+    void handleFalseStartEvent();
+    void handleResetEvent();
 private:
     AmpelState currentState = AmpelState::IDLE;
     InputHandler input;
-    LedController leds;
-    // ... weitere interne Variablen
+    AmpelController ampel;
 };
+

@@ -8,19 +8,18 @@ description: "Task list for Startampel für Carrera-Bahn"
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-- [ ] T001 Create src/ and tests/ directories per implementation plan
-- [ ] T002 Initialize PlatformIO/Arduino project in src/
-- [ ] T003 [P] Add README and wiring diagram to docs/
-- [ ] T004 [P] Add .gitignore and basic project config files
+- [X] T001 Create src/ and tests/ directories per implementation plan
+- [X] T002 Initialize PlatformIO/Arduino project in src/
+- [X] T003 [P] Add README and wiring diagram to docs/
+- [X] T004 [P] Add .gitignore and basic project config files
 
 ---
 
-
-- [ ] T005 [P] Implement pin mapping and config in src/config.h (inkl. IR-Schranke)
-- [ ] T006 [P] Implement InputHandler (Taster/GPIO/IR-Schranke debouncing) in src/input_handler.cpp
-- [ ] T007 [P] Implement LED control abstraction in src/led_controller.cpp
-- [ ] T008 [P] Implement StateMachine base in src/state_machine.cpp
-- [ ] T009 [P] Add test stubs for all core modules in tests/
+- [X] T005 [P] Implement pin mapping and config in src/config.h (inkl. IR-Schranke)
+- [X] T006 [P] Implement InputHandler (Taster/GPIO/IR-Schranke debouncing) in src/input_handler.cpp
+- [X] T007 [P] Implement LED control abstraction in src/led_controller.cpp
+- [X] T008 [P] Implement StateMachine base in src/state_machine.cpp
+- [X] T009 [P] Add test stubs for all core modules in tests/
 
 ---
 
@@ -29,11 +28,11 @@ description: "Task list for Startampel für Carrera-Bahn"
 **Goal**: Startsequenz mit 5 roten LEDs, danach grüne LEDs zur Startfreigabe
 **Independent Test**: Start auslösen, Sequenz und Umschaltung beobachten
 
-- [ ] T010 [P] [US1] Implement Startsequenz-Logik in src/ampel_controller.cpp
-- [ ] T011 [P] [US1] Implement Startauslösung per Taster und GPIO in src/input_handler.cpp
-- [ ] T012 [US1] Implement Umschaltung auf grüne LEDs in src/ampel_controller.cpp
-- [ ] T013 [US1] Implement Reset-Logik (Abbruch Sequenz) in src/state_machine.cpp
-- [ ] T014 [US1] Add test for Startsequenz in tests/test_startsequenz.cpp
+- [X] T010 [P] [US1] Implement Startsequenz-Logik in src/ampel_controller.cpp
+- [X] T011 [P] [US1] Implement Startauslösung per Taster und GPIO in src/input_handler.cpp
+- [X] T012 [US1] Implement Umschaltung auf grüne LEDs in src/ampel_controller.cpp
+- [X] T013 [US1] Implement Reset-Logik (Abbruch Sequenz) in src/state_machine.cpp
+- [X] T014 [US1] Add test for Startsequenz in tests/test_startsequenz.cpp
 
 ---
 
