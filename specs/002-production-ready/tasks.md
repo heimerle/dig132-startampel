@@ -101,13 +101,13 @@ description: "Task list for Phase 2: Production Readiness & Extensions"
 **Goal**: Endbenutzer-freundliche Dokumentation  
 **Independent Test**: Neuer Benutzer kann System bedienen
 
-- [ ] T147 [P] Erstelle Schnellstart-Anleitung (5 min Setup)
-- [ ] T148 [P] Erstelle ausführliche Bedienungsanleitung
-- [ ] T149 [P] Erstelle Troubleshooting-Guide mit FAQ
+- [X] T147 [P] Erstelle Schnellstart-Anleitung (5 min Setup) → docs/QUICKSTART.md ✓
+- [X] T148 [P] Erstelle ausführliche Bedienungsanleitung → docs/BEDIENUNG.md ✓
+- [X] T149 [P] Erstelle Troubleshooting-Guide mit FAQ → docs/TROUBLESHOOTING.md ✓
 - [ ] T150 Erstelle Video-Tutorial (optional, Screencast)
 - [ ] T151 [P] Erstelle Wartungs-Anleitung (Reinigung, Kalibrierung)
-- [ ] T152 Erstelle "Erste Hilfe" Guide für häufige Fehler
-- [ ] T153 [P] Überarbeite README.md mit Links zu neuer Doku
+- [ ] T152 Erstelle "Erste Hilfe" Guide für häufige Fehler (in T149 enthalten)
+- [X] T153 [P] Überarbeite README.md mit Links zu neuer Doku ✓
 - [ ] T154 Erstelle Druck-freundliche PDF-Version der Doku
 
 ---
@@ -133,14 +133,14 @@ description: "Task list for Phase 2: Production Readiness & Extensions"
 **Goal**: Automatisierte Tests, Builds und Releases  
 **Independent Test**: GitHub Actions läuft, Releases erstellt
 
-- [ ] T163 [P] Erstelle .github/workflows/build.yml für PlatformIO Build
-- [ ] T164 [P] Erstelle .github/workflows/test.yml für Unit Tests
-- [ ] T165 [P] Konfiguriere Binary-Artifacts in GitHub Actions
-- [ ] T166 Erstelle Release-Automation Script
-- [ ] T167 [P] Erstelle Changelog-Auto-Generation
-- [ ] T168 Implementiere Semantic Versioning
+- [X] T163 [P] Erstelle .github/workflows/build.yml für PlatformIO Build ✓
+- [X] T164 [P] Erstelle .github/workflows/test.yml für Unit Tests (in build.yml enthalten) ✓
+- [X] T165 [P] Konfiguriere Binary-Artifacts in GitHub Actions ✓
+- [X] T166 Erstelle Release-Automation Script → .github/workflows/release.yml ✓
+- [X] T167 [P] Erstelle Changelog-Auto-Generation (in release.yml) ✓
+- [X] T168 Implementiere Semantic Versioning (dokumentiert) ✓
 - [ ] T169 [P] Add GitHub Release-Template für neue Releases
-- [ ] T170 Dokumentiere CI/CD Setup in docs/CI-CD.md
+- [X] T170 Dokumentiere CI/CD Setup in docs/CI-CD.md ✓
 
 ---
 
