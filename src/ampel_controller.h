@@ -33,6 +33,9 @@ public:
     void setBlinkMode(BlinkMode mode, uint8_t param = 0);
     BlinkMode getBlinkMode() const;
     
+    // Winner display
+    void setWinnerRed(uint8_t lane);
+    
     // Helper methods
     bool isSequenceRunning();
     uint8_t getSequenceStep();

@@ -132,3 +132,9 @@ void AmpelController::handleBlinkMode() {
         }
     }
 }
+
+void AmpelController::setWinnerRed(uint8_t lane) {
+    if (lane > 0 && lane <= NUM_LANES) {
+        leds.setRed(lane, true);
+    }
+}

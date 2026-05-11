@@ -22,9 +22,13 @@ public:
     void handleStartEvent();
     void handleFalseStartEvent();
     void handleResetEvent();
+    void handleSafetyCarEvent();
+    void handleChaosEvent();
+    void handleEndEvent(uint8_t winnerLane = 0);
 private:
     AmpelState currentState = AmpelState::IDLE;
     InputHandler input;
     AmpelController ampel;
+    uint8_t winnerLane = 0;
 };
 

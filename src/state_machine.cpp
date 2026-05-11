@@ -20,11 +20,15 @@ void StateMachine::update() {
     if (input.isFalseStartDetected()) {
         handleFalseStartEvent();
     }
+    if (input.isModePressed()) {
+        // Can be extended for mode switching or other functionality
+    }
 }
 
 void StateMachine::reset() {
     currentState = AmpelState::IDLE;
     ampel.reset();
+    winnerLane = 0;
 }
 
 void StateMachine::setState(AmpelState state) {
@@ -49,7 +53,29 @@ void StateMachine::handleResetEvent() {
 void StateMachine::handleFalseStartEvent() {
     if (currentState == AmpelState::STARTSEQUENCE) {
         currentState = AmpelState::FRUEHSTART;
-        // Simulate false start on Lane 1 (can be extended to detect which lane)
         ampel.setFalseStart(1);
+    }
+}
+
+void StateMachine::handleSafetyCarEvent() {
+    if (currentState == AmpelState::STARTFREIGABE) {
+        currentState = AmpelState::SAFETYCAR;
+        ampel.setBlinkMode(BlinkMode::YELLOW_ALL);
+    }
+}
+
+void StateMachine::handleChaosEvent() {
+    if (currentState == AmpelState::STARTFREIGABE) {
+        currentState = AmpelState::CHAOS;
+        ampel.setBlinkMode(BlinkMode::RED_ALL);
+    }
+}
+
+void StateMachine::handleEndEvent(uint8_t winnerLane) {
+    currentState = AmpelState::ENDE;
+    this->winnerLane = winnerLane;
+    ampel.setBlinkMode(BlinkMode::GREEN_ALL);
+    if (winnerLane > 0) {
+        ampel.setWinnerRed(winnerLane);
     }
 }

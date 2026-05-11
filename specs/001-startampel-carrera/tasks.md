@@ -54,9 +54,9 @@ description: "Task list for Startampel für Carrera-Bahn"
 **Goal**: Alle gelben LEDs blinken synchron
 **Independent Test**: Safety-Car-Modus aktivieren, Blinken prüfen
 
-- [ ] T019 [P] [US3] Implement Safety-Car-Modus in src/state_machine.cpp
-- [ ] T020 [US3] Implement synchrones Blinken aller gelben LEDs in src/ampel_controller.cpp
-- [ ] T021 [US3] Add test for Safety-Car-Modus in tests/test_safetycar.cpp
+- [X] T019 [P] [US3] Implement Safety-Car-Modus in src/state_machine.cpp
+- [X] T020 [US3] Implement synchrones Blinken aller gelben LEDs in src/ampel_controller.cpp
+- [X] T021 [US3] Add test for Safety-Car-Modus in tests/test_safetycar.cpp
 
 ---
 
@@ -65,9 +65,9 @@ description: "Task list for Startampel für Carrera-Bahn"
 **Goal**: Alle roten LEDs blinken bei Chaos/Rennunterbrechung
 **Independent Test**: Modus auslösen, Blinken prüfen
 
-- [ ] T022 [P] [US4] Implement Chaos/Rennunterbrechung-Modus in src/state_machine.cpp
-- [ ] T023 [US4] Implement synchrones Blinken aller roten LEDs in src/ampel_controller.cpp
-- [ ] T024 [US4] Add test for Chaos-Modus in tests/test_chaos.cpp
+- [X] T022 [P] [US4] Implement Chaos/Rennunterbrechung-Modus in src/state_machine.cpp
+- [X] T023 [US4] Implement synchrones Blinken aller roten LEDs in src/ampel_controller.cpp
+- [X] T024 [US4] Add test for Chaos-Modus in tests/test_chaos.cpp
 
 ---
 
@@ -76,16 +76,16 @@ description: "Task list for Startampel für Carrera-Bahn"
 **Goal**: Nach Rennende blinken alle grünen LEDs, Sieger-rote LED bleibt an
 **Independent Test**: Rennende auslösen, Anzeige prüfen
 
-- [ ] T025 [P] [US5] Implement Rennende/Siegeranzeige in src/state_machine.cpp
-- [ ] T026 [US5] Implement grünes LED-Blinken und Sieger-rote LED in src/ampel_controller.cpp
-- [ ] T027 [US5] Add test for Rennende/Siegeranzeige in tests/test_rennende.cpp
+- [X] T025 [P] [US5] Implement Rennende/Siegeranzeige in src/state_machine.cpp
+- [X] T026 [US5] Implement grünes LED-Blinken und Sieger-rote LED in src/ampel_controller.cpp
+- [X] T027 [US5] Add test for Rennende/Siegeranzeige in tests/test_rennende.cpp
 
 ---
 
 
 ## Phase 8: Edge Case Tests & Polish
 
-- [ ] T028 [P] Add documentation for wiring and usage in docs/
+- [X] T028 [P] Add documentation for wiring and usage in docs/
 - [ ] T029 [P] Add code comments and clean up
 - [ ] T030 [P] Final integration test for all modes in tests/test_integration.cpp
 
