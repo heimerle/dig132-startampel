@@ -1,0 +1,16 @@
+/.pio/
+/.vscode/
+/.DS_Store
+*.bin
+*.elf
+*.map
+*.pyc
+*.swp
+*.swo
+*.bak
+*.d
+*.o
+*.a
+*.out
+*.log
+/build/

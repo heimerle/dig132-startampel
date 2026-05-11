@@ -1,50 +1,37 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+
+# Startampel Project Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Test-First (NON-NEGOTIABLE)
+Alle Logikfunktionen und Zustandsautomaten müssen durch Unit- und Integrationstests abgedeckt werden. Red-Green-Refactor-Zyklus ist Pflicht.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Simplicity & Robustness
+Die Implementierung muss so einfach wie möglich gehalten werden. Keine unnötige Komplexität. Fehlerfälle (z.B. gleichzeitige Eingaben, Stromausfall) müssen robust behandelt werden.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Embedded Focus
+Alle Komponenten müssen für Embedded-Umgebungen (ESP32/D1 Mini) optimiert sein. Ressourcenverbrauch und Reaktionszeit sind kritisch.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Review & Traceability
+Jede Änderung muss per Review geprüft werden. Jede Anforderung muss auf mindestens eine Task und einen Test rückverfolgbar sein.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Documentation
+Schaltplan, Pinbelegung und Bedienung müssen dokumentiert und versioniert werden.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Additional Constraints
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- C++ (Arduino Core) ist Standard, MicroPython nur nach expliziter Entscheidung.
+- Pinbelegung und Spurenzahl müssen vor Implementierung finalisiert werden.
+- Alle Tasks und Tests müssen im tasks.md dokumentiert sein.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- Vor jeder Implementierung: Tests schreiben, Review einholen.
+- Nach jedem Commit: Tests ausführen, Ergebnisse dokumentieren.
+- Änderungen an der Architektur oder Pinbelegung nur nach Review und Update der Dokumentation.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Diese Constitution ist verbindlich für alle Projektbeteiligten. Änderungen bedürfen eines dokumentierten Reviews und einer neuen Versionierung.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-05-11 | **Last Amended**: 2026-05-11
