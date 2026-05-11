@@ -9,7 +9,7 @@
 
 ### User Story 1 - Startsequenz & Startfreigabe (Priority: P1)
 
-Ein Benutzer startet das Rennen per Taster oder externem GPIO-Trigger. Die Startampel zeigt einen Countdown mit 5 roten LEDs, danach leuchten alle grünen LEDs zur Startfreigabe.
+Ein Benutzer startet das Rennen per Taster oder externem GPIO-Trigger. Die Startampel zeigt einen Countdown mit einer roten LED, die 5x aufblinkt (je 500ms), danach leuchten alle grünen LEDs zur Startfreigabe.
 
 **Why this priority**: Dies ist der Kernprozess für den Rennstart und für alle Nutzer essenziell.
 
@@ -88,23 +88,29 @@ Nach Rennende blinken alle grünen LEDs, die rote LED der Siegerbahn bleibt an.
 ## Requirements *(mandatory)*
 
 1. Das System muss eine Startampel mit einzelnen LEDs (rot, gelb, grün) pro Spur unterstützen.
-2. Die Steuerung muss sowohl per Taster als auch per GPIO-Eingang möglich sein.
-3. Die Startsequenz muss einen Countdown mit 5 roten LEDs anzeigen.
+2. Die Steuerung muss sowohl per Taster als auch per GPIO-Eingang möglich sein. Bei gleichzeitigen Eingaben (Button + GPIO): Last-Input-Wins-Priorität. Debounce 30ms für alle Eingaben.
+3. Die Startsequenz muss einen Countdown mit einer roten LED anzeigen, die 5x aufblinkt (500ms pro Schritt = 2,5s total).
 4. Nach dem Countdown müssen alle grünen LEDs leuchten (Startfreigabe).
-5. Bei Frühstart muss die betroffene rote LED blinken und alle gelben LEDs leuchten.
-6. Im Safety-Car/Pace-Car-Modus müssen alle gelben LEDs blinken.
-7. Bei Rennunterbrechung/Chaos müssen alle roten LEDs blinken.
-8. Nach Rennende müssen alle grünen LEDs blinken, die rote LED der Siegerbahn bleibt an.
-9. Das System muss auf gleichzeitige Eingaben (Taster/GPIO) robust reagieren.
+5. Bei Frühstart: Alle gelben LEDs leuchten STEADY, die betroffene rote LED blinkt (250ms on/off).
+6. Im Safety-Car/Pace-Car-Modus: Alle gelben LEDs blinken synchron (250ms on/off).
+7. Bei Rennunterbrechung/Chaos: Alle roten LEDs blinken synchron (250ms on/off).
+8. Nach Rennende: Alle grünen LEDs blinken (250ms on/off), die rote LED der Siegerbahn bleibt STEADY an.
+9. Das System muss auf gleichzeitige Eingaben (Taster/GPIO) robust reagieren ohne undefined states.
 10. Ein Reset muss jederzeit alle laufenden Sequenzen/Modi abbrechen und LEDs ausschalten.
 
 ## Success Criteria *(mandatory)*
 
 - Nutzer können das Rennen zuverlässig per Taster oder externem Trigger starten.
-- Die LED-Anzeigen entsprechen in allen Modi exakt den beschriebenen Abläufen.
+- Die LED-Anzeigen entsprechen in allen Modi exakt den beschriebenen Abläufen:
+  - **Startsequenz**: Rote LED blinkt 5x (500ms each), dann grün steady
+  - **Frühstart**: Gelb steady + rote LED blinkt (250ms on/off)
+  - **Safety-Car**: Gelb blink sync (250ms on/off)
+  - **Chaos**: Rot blink sync (250ms on/off)
+  - **Rennende**: Grün blink (250ms on/off) + Sieger-rot steady
 - Frühstart, Safety-Car, Chaos und Rennende werden korrekt signalisiert.
-- Das System reagiert robust auf gleichzeitige oder fehlerhafte Eingaben.
+- Das System reagiert robust auf gleichzeitige oder fehlerhafte Eingaben (Debounce 30ms, Last-Input-Wins).
 - Alle Funktionen sind unabhängig testbar und dokumentiert.
+- Button Response Time <50ms, LED Blink Genauigkeit ±10ms
 
 ## Assumptions
 

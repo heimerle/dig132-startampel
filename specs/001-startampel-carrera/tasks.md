@@ -39,13 +39,13 @@ description: "Task list for Startampel für Carrera-Bahn"
 
 ## Phase 4: User Story 2 – Frühstart-Erkennung (P2) [US2]
 
-**Goal**: Frühstart erkennen (auch per IR-Schranke), gelbe LEDs leuchten, betroffene rote LED blinkt
+**Goal**: Frühstart erkennen (auch per IR-Schranke), gelbe LEDs STEADY, betroffene rote LED blinkt (250ms on/off)
 **Independent Test**: Frühstart simulieren (Taster oder IR-Schranke), LED-Reaktion prüfen
 
-- [X] T015 [P] [US2] Implement Frühstart-Erkennung (Taster und IR-Schranke) in src/input_handler.cpp
-- [X] T016 [US2] Implement gelbe LED-Logik in src/ampel_controller.cpp
-- [X] T017 [US2] Implement rote LED-Blinken für betroffene Spur in src/ampel_controller.cpp
-- [X] T018 [US2] Add test for Frühstart (inkl. IR-Schranke) in tests/test_fruehstart.cpp
+- [X] T015 [P] [US2] [FR-2, FR-5] Implement Frühstart-Erkennung (Taster und IR-Schranke) in src/input_handler.cpp
+- [X] T016 [US2] [FR-5] Implement gelbe LED-Logik (STEADY, nicht blinkend) in src/ampel_controller.cpp
+- [X] T017 [US2] [FR-5] Implement rote LED-Blinken (250ms cycle) für betroffene Spur in src/ampel_controller.cpp
+- [X] T018 [US2] [FR-5] Add test for Frühstart (inkl. IR-Schranke) in tests/test_fruehstart.cpp
 
 ---
 

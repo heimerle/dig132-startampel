@@ -63,7 +63,7 @@ Die Startampel für die Carrera-Bahn steuert pro Spur einzelne LEDs (rot, gelb, 
 | Taster Modus     | 27        | TX         | optional/global          |
 | GPIO Trigger 1   | 32        | A0         | extern, z.B. Start       |
 | GPIO Trigger 2   | 33        | D0         | extern, z.B. Frühstart   |
-| IR-Schranke      | —         | D8         | Frühstart-Erkennung      |
+| IR-Schranke      | —         | A0         | Frühstart-Erkennung      |
 **Frühstart-Logik:**
 - Die IR-Lichtschranke ist vor der Pole Position angebracht und mit D8 (D1 Mini) verbunden.
 - Wird die Schranke während der Startsequenz unterbrochen, wird ein Frühstart ausgelöst.

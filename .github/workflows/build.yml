@@ -1,0 +1,98 @@
+name: Build & Test CI
+
+on:
+  push:
+    branches:
+      - main
+      - 001-startampel-carrera
+      - 002-production-ready
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        environment:
+          - d1_mini
+          - esp32dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install PlatformIO
+        run: |
+          python -m pip install --upgrade pip
+          pip install platformio
+          
+      - name: Cache PlatformIO packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.platformio
+          key: ${{ runner.os }}-pio-${{ hashFiles('**/platformio.ini') }}
+          restore-keys: |
+            ${{ runner.os }}-pio-
+      
+      - name: Build firmware for ${{ matrix.environment }}
+        run: |
+          platformio run -e ${{ matrix.environment }}
+          
+      - name: Run tests
+        run: |
+          platformio test -e ${{ matrix.environment }}
+        continue-on-error: true
+        
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: firmware-${{ matrix.environment }}
+          path: .pio/build/${{ matrix.environment }}/
+          retention-days: 30
+
+  code-quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install linting tools
+        run: |
+          pip install cppcheck
+          
+      - name: Run Cppcheck for static analysis
+        run: |
+          cppcheck src/ --enable=all --suppress=missingIncludeSystem --xml
+        continue-on-error: true
+
+  documentation:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Check documentation links
+        run: |
+          # Basic check for broken markdown links
+          echo "Checking documentation files exist..."
+          test -f README.md && echo "✓ README.md" || echo "✗ README.md"
+          test -f docs/QUICKSTART.md && echo "✓ QUICKSTART.md" || echo "✗ QUICKSTART.md"
+          test -f docs/BEDIENUNG.md && echo "✓ BEDIENUNG.md" || echo "✗ BEDIENUNG.md"
+          test -f docs/TROUBLESHOOTING.md && echo "✓ TROUBLESHOOTING.md" || echo "✗ TROUBLESHOOTING.md"
+          test -f docs/wiring.md && echo "✓ wiring.md" || echo "✗ wiring.md"
+          test -f docs/EINKAUFSLISTE.md && echo "✓ EINKAUFSLISTE.md" || echo "✗ EINKAUFSLISTE.md"

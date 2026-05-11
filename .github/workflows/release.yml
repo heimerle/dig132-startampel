@@ -1,0 +1,98 @@
+name: Release & Generate Binaries
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        environment:
+          - d1_mini
+          - esp32dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install PlatformIO
+        run: |
+          python -m pip install --upgrade pip
+          pip install platformio
+          
+      - name: Build firmware for ${{ matrix.environment }}
+        run: |
+          platformio run -e ${{ matrix.environment }}
+          
+      - name: Copy and rename binaries
+        run: |
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          VERSION=${GITHUB_REF#refs/tags/}
+          mkdir -p firmware-release
+          
+          if [ -f ".pio/build/${{ matrix.environment }}/firmware.bin" ]; then
+            cp .pio/build/${{ matrix.environment }}/firmware.bin \
+               firmware-release/startampel-${{ matrix.environment }}-${VERSION}.bin
+          fi
+          
+          if [ -f ".pio/build/${{ matrix.environment }}/firmware.elf" ]; then
+            cp .pio/build/${{ matrix.environment }}/firmware.elf \
+               firmware-release/startampel-${{ matrix.environment }}-${VERSION}.elf
+          fi
+          
+      - name: Upload binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: firmware-binaries-${{ matrix.environment }}
+          path: firmware-release/
+          
+  create-release:
+    needs: build-release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+          
+      - name: Generate Changelog
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          
+          echo "## Release ${VERSION}" > CHANGELOG_CURRENT.md
+          echo "" >> CHANGELOG_CURRENT.md
+          echo "### Changes" >> CHANGELOG_CURRENT.md
+          
+          if [ ! -z "$PREVIOUS_TAG" ]; then
+            git log ${PREVIOUS_TAG}..HEAD --oneline >> CHANGELOG_CURRENT.md
+          else
+            git log --oneline >> CHANGELOG_CURRENT.md
+          fi
+          
+          cat CHANGELOG_CURRENT.md
+          
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: artifacts/**/*
+          body_path: CHANGELOG_CURRENT.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

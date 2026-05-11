@@ -45,7 +45,7 @@ Eine Arduino-basierte Steuerung für eine Carrera-Bahn-Startampel mit individuel
 | Taster Modus     | TX         | Optional/Global      |
 | GPIO Start       | A0         | Extern               |
 | GPIO Frühstart   | D0         | Extern               |
-| IR-Schranke      | D8         | Frühstart-Erkennung  |
+| IR-Schranke      | A0         | Frühstart-Erkennung  |
 
 ## Bedienung
 
@@ -138,6 +138,30 @@ IDLE --[Start]--> STARTSEQUENCE --[Completion]--> STARTFREIGABE
 - Reaktionszeit auf Eingaben: < 50ms
 - LED-Blinken: Stabil ohne Flackern
 - Haupt-Loop: 10ms Cycle
+
+## Dokumentation & Support
+
+### 🚀 Quick Start
+- **[QUICKSTART.md](./docs/QUICKSTART.md)** – Erste 5 Minuten (Hardware + Firmware + Test)
+
+### 📖 Benutzer-Dokumentation
+- **[BEDIENUNG.md](./docs/BEDIENUNG.md)** – Vollständige Anleitung aller Modi und Funktionen
+- **[TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md)** – Fehlerbehandlung, FAQs, Lösungsschritte
+
+### 🛠️ Technische Referenz
+- **[wiring.md](./docs/wiring.md)** – Verdrahtungsschema und Schaltpläne
+- **[Spezifikation](./specs/001-startampel-carrera/spec.md)** – Anforderungen und Features
+- **[Implementierungsplan](./specs/001-startampel-carrera/plan.md)** – Architektur und Design
+- **[Taskliste](./specs/001-startampel-carrera/tasks.md)** – Implementierte Tasks (34/34 ✓)
+
+### 🛒 Hardware & Beschaffung
+- **[EINKAUFSLISTE.md](./docs/EINKAUFSLISTE.md)** – Komponenten mit AZ-Delivery/Amazon Links
+- **[SHOPPING.md](./docs/SHOPPING.md)** – Quick-Reference mit Such-Strings
+
+### 🧪 Test-Strategie
+- **[TESTING.md](./docs/TESTING.md)** – Unit Tests, Integration Tests, Ausführungsanleitung
+
+---
 
 ## Verwandte Dokumente
 
