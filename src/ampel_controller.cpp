@@ -12,30 +12,30 @@ void AmpelController::update() {
     if (sequenceRunning) {
         updateSequence();
     }
-    updateBlinks();
+    if (currentBlinkMode != BlinkMode::OFF) {
+        updateBlinks();
+    }
 }
 
 void AmpelController::startSequence() {
     sequenceRunning = true;
     sequenceStep = 0;
     lastStepTime = millis();
+    currentBlinkMode = BlinkMode::OFF;
     
     // Turn off all LEDs before starting
-    for (uint8_t lane = 1; lane <= NUM_LANES; lane++) {
-        leds.setRed(lane, false);
-        leds.setYellow(lane, false);
-        leds.setGreen(lane, false);
-    }
+    leds.allOff();
 }
 
 void AmpelController::startFreigabe() {
     sequenceRunning = false;
+    currentBlinkMode = BlinkMode::OFF;
     
-    // Turn off all red and yellow LEDs
+    // Turn off all red and yellow LEDs, turn on green
     for (uint8_t lane = 1; lane <= NUM_LANES; lane++) {
         leds.setRed(lane, false);
         leds.setYellow(lane, false);
-        leds.setGreen(lane, true);  // Turn on green LEDs
+        leds.setGreen(lane, true);
     }
 }
 
@@ -44,13 +44,33 @@ void AmpelController::reset() {
     sequenceStep = 0;
     lastStepTime = 0;
     blinkState = false;
+    currentBlinkMode = BlinkMode::OFF;
+    falseStartLane = 0;
     
     // Turn off all LEDs
-    for (uint8_t lane = 1; lane <= NUM_LANES; lane++) {
-        leds.setRed(lane, false);
-        leds.setYellow(lane, false);
-        leds.setGreen(lane, false);
-    }
+    leds.allOff();
+}
+
+void AmpelController::setFalseStart(uint8_t lane) {
+    falseStartLane = lane;
+    setBlinkMode(BlinkMode::RED_SINGLE, lane);
+    leds.setAllYellow(true);  // Turn on all yellow LEDs
+}
+
+void AmpelController::clearFalseStart() {
+    falseStartLane = 0;
+    setBlinkMode(BlinkMode::OFF);
+}
+
+void AmpelController::setBlinkMode(BlinkMode mode, uint8_t param) {
+    currentBlinkMode = mode;
+    blinkParam = param;
+    lastBlinkTime = millis();
+    blinkState = false;
+}
+
+BlinkMode AmpelController::getBlinkMode() const {
+    return currentBlinkMode;
 }
 
 bool AmpelController::isSequenceRunning() {
@@ -75,13 +95,40 @@ void AmpelController::updateSequence() {
             lastStepTime = currentTime;
         } else {
             // Sequence complete, transition to green
-            sequenceRunning = false;
             startFreigabe();
         }
     }
 }
 
 void AmpelController::updateBlinks() {
-    // Placeholder for blink update logic
-    // This will be used for false start and other blinking modes
+    handleBlinkMode();
+}
+
+void AmpelController::handleBlinkMode() {
+    uint32_t currentTime = millis();
+    
+    if (currentTime - lastBlinkTime >= BLINK_INTERVAL) {
+        blinkState = !blinkState;
+        lastBlinkTime = currentTime;
+        
+        switch (currentBlinkMode) {
+            case BlinkMode::RED_SINGLE:
+                if (falseStartLane > 0) {
+                    leds.setRed(falseStartLane, blinkState);
+                }
+                break;
+            case BlinkMode::RED_ALL:
+                leds.setAllRed(blinkState);
+                break;
+            case BlinkMode::YELLOW_ALL:
+                leds.setAllYellow(blinkState);
+                break;
+            case BlinkMode::GREEN_ALL:
+                leds.setAllGreen(blinkState);
+                break;
+            case BlinkMode::OFF:
+            default:
+                break;
+        }
+    }
 }

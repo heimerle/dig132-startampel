@@ -49,6 +49,7 @@ void StateMachine::handleResetEvent() {
 void StateMachine::handleFalseStartEvent() {
     if (currentState == AmpelState::STARTSEQUENCE) {
         currentState = AmpelState::FRUEHSTART;
-        // Frühstart handling wird später implementiert
+        // Simulate false start on Lane 1 (can be extended to detect which lane)
+        ampel.setFalseStart(1);
     }
 }
