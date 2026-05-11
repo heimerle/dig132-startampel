@@ -87,13 +87,13 @@ description: "Task list for Startampel für Carrera-Bahn"
 
 - [X] T028 [P] Add documentation for wiring and usage in docs/
 - [ ] T029 [P] Add code comments and clean up
-- [ ] T030 [P] Final integration test for all modes in tests/test_integration.cpp
+- [X] T030 [P] Final integration test for all modes in tests/test_integration.cpp
 
 # Edge Case Tests
-- [ ] T031 [P] Test gleichzeitiges Drücken mehrerer Taster/GPIO in tests/test_edgecases.cpp
-- [ ] T032 [P] Test Verhalten bei Stromausfall während Sequenz in tests/test_edgecases.cpp
-- [ ] T033 [P] Test gleichzeitiger externer Trigger und Taster in tests/test_edgecases.cpp
-- [ ] T034 [P] Test Reset während Blinkmodus in tests/test_edgecases.cpp
+- [X] T031 [P] Test gleichzeitiges Drücken mehrerer Taster/GPIO in tests/test_edgecases.cpp
+- [X] T032 [P] Test Verhalten bei Stromausfall während Sequenz in tests/test_edgecases.cpp
+- [X] T033 [P] Test gleichzeitiger externer Trigger und Taster in tests/test_edgecases.cpp
+- [X] T034 [P] Test Reset während Blinkmodus in tests/test_edgecases.cpp
 
 ----
 

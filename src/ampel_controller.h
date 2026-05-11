@@ -6,14 +6,26 @@
 #define SEQ_STEP_DURATION 500    // Duration of each LED in sequence
 #define BLINK_INTERVAL 250       // Blink interval for flashing LEDs
 
+/**
+ * Blink modes for LED patterns
+ */
 enum class BlinkMode {
     OFF,
-    RED_SINGLE,      // Single red LED blinking
-    RED_ALL,         // All red LEDs blinking
-    YELLOW_ALL,      // All yellow LEDs blinking
-    GREEN_ALL        // All green LEDs blinking
+    RED_SINGLE,      // Single red LED blinking (for false start detection)
+    RED_ALL,         // All red LEDs blinking (chaos/interruption)
+    YELLOW_ALL,      // All yellow LEDs blinking (safety-car mode)
+    GREEN_ALL        // All green LEDs blinking (race end)
 };
 
+/**
+ * AmpelController: Central LED sequence and blink management
+ * 
+ * Responsible for:
+ * - Managing start sequences (5-step countdown with red LEDs)
+ * - Controlling blink patterns for different race states
+ * - Transitioning between start sequence and race start signal
+ * - Handling false start LED patterns
+ */
 class AmpelController {
 public:
     AmpelController();
