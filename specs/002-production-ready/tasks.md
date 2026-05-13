@@ -6,6 +6,15 @@ description: "Task list for Phase 2: Production Readiness & Extensions"
 
 **Input**: specs/002-production-ready/plan.md
 
+## Phase 0: Technisches Design & Schaltplan (P1)
+
+**Goal**: Vollstaendiges technisches Design fuer alle Phase-2-Features festlegen
+**Independent Test**: Architektur, Schnittstellen und Hardware-Zuordnung sind dokumentiert
+
+- [ ] T100 [P] Erstelle technisches Design in `specs/002-production-ready/technical-design.md`
+- [ ] T100a [P] Erstelle Produktions-Schaltplan in `specs/002-production-ready/schaltplan.md`
+- [ ] T100b Leite Hardware-Checkliste aus dem Schaltplan in `docs/TESTING.md` ab
+
 ## Phase 1 ✓ (abgeschlossen, siehe [001-startampel-carrera/tasks.md](../001-startampel-carrera/tasks.md))
 
 ---

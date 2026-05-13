@@ -1,130 +1,174 @@
 ---
-description: "Task list for Startampel für Carrera-Bahn"
+description: "Task list for implementing the Startampel feature"
 ---
 
 # Tasks: Startampel für Carrera-Bahn
 
-**Input**: specs/001-startampel-carrera/plan.md, specs/001-startampel-carrera/spec.md
+**Input**: Design documents from `/specs/001-startampel-carrera/`
+**Prerequisites**: plan.md (required), spec.md (required for user stories)
+
+**Tests**: Tests are included where explicitly requested in the feature specification.
+
+**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
+
+## Format: `[ID] [P?] [Story] Description`
+
+- **[P]**: Can run in parallel (different files, no dependencies)
+- **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
+- Include exact file paths in descriptions
+
+---
+
+## Phase 0: Technical Design & Schematic
+
+**Purpose**: Lock architecture, interfaces, timing, and hardware wiring before implementation.
+
+- [ ] T000 [P] Create technical architecture document in `specs/001-startampel-carrera/technical-design.md`
+- [ ] T000a [P] Create wiring/schematic document in `specs/001-startampel-carrera/schaltplan.md`
+- [ ] T000b Resolve D1 Mini pin conflicts (IR vs Stop) in `src/config.h` and align docs
+
+---
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-- [X] T001 Create src/ and tests/ directories per implementation plan
-- [X] T002 Initialize PlatformIO/Arduino project in src/
-- [X] T003 [P] Add README and wiring diagram to docs/
-- [X] T004 [P] Add .gitignore and basic project config files
+**Purpose**: Project initialization and basic structure
+
+- [ ] T001 Create project structure per implementation plan
+- [ ] T002 Initialize PlatformIO project with Arduino Core dependencies
+- [ ] T003 [P] Configure linting and formatting tools (e.g., clang-format)
+- [ ] T004 [P] Setup CI/CD workflows for build and test automation
+- [ ] T005 [P] Create base configuration file `src/config.h` with pin definitions
 
 ---
 
-- [X] T005 [P] Implement pin mapping and config in src/config.h (inkl. IR-Schranke)
-- [X] T006 [P] Implement InputHandler (Taster/GPIO/IR-Schranke debouncing) in src/input_handler.cpp
-- [X] T007 [P] Implement LED control abstraction in src/led_controller.cpp
-- [X] T008 [P] Implement StateMachine base in src/state_machine.cpp
-- [X] T009 [P] Add test stubs for all core modules in tests/
+## Phase 2: Foundational (Blocking Prerequisites)
+
+**Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
+
+- [ ] T006 Implement `InputHandler` for button debouncing in `src/input_handler.cpp`
+- [ ] T007 Implement `LedController` for LED abstraction in `src/led_controller.cpp`
+- [ ] T008 Implement `StateMachine` for managing race states in `src/state_machine.cpp`
+- [ ] T009 Create unit tests for foundational components in `tests/`
+
+**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
 ---
 
-## Phase 3: User Story 1 – Startsequenz & Startfreigabe (P1) [US1] 🎯 MVP
+## Phase 3: User Story 1 - Startsequenz & Startfreigabe (Priority: P1) 🎯 MVP
 
-**Goal**: Startsequenz mit 5 roten LEDs, danach grüne LEDs zur Startfreigabe
-**Independent Test**: Start auslösen, Sequenz und Umschaltung beobachten
+**Goal**: Implement the start sequence and start release functionality.
 
-- [X] T010 [P] [US1] Implement Startsequenz-Logik in src/ampel_controller.cpp
-- [X] T011 [P] [US1] Implement Startauslösung per Taster und GPIO in src/input_handler.cpp
-- [X] T012 [US1] Implement Umschaltung auf grüne LEDs in src/ampel_controller.cpp
-- [X] T013 [US1] Implement Reset-Logik (Abbruch Sequenz) in src/state_machine.cpp
-- [X] T014 [US1] Add test for Startsequenz in tests/test_startsequenz.cpp
+**Independent Test**: Verify that the start sequence and release work as described.
 
----
+### Tests for User Story 1
 
+- [ ] T010 [P] [US1] Unit test for start sequence in `tests/test_startsequenz.cpp`
+- [ ] T011 [P] [US1] Integration test for start sequence in `tests/test_integration.cpp`
 
-## Phase 4: User Story 2 – Frühstart-Erkennung (P2) [US2]
+### Implementation for User Story 1
 
-**Goal**: Frühstart erkennen (auch per IR-Schranke), gelbe LEDs STEADY, betroffene rote LED blinkt (250ms on/off)
-**Independent Test**: Frühstart simulieren (Taster oder IR-Schranke), LED-Reaktion prüfen
+- [ ] T012 [P] [US1] Implement start sequence logic in `src/ampel_controller.cpp`
+- [ ] T013 [US1] Add start release logic to `src/ampel_controller.cpp`
+- [ ] T014 [US1] Integrate start sequence with `StateMachine` in `src/state_machine.cpp`
+- [ ] T015 [US1] Add logging for start sequence events
 
-- [X] T015 [P] [US2] [FR-2, FR-5] Implement Frühstart-Erkennung (Taster und IR-Schranke) in src/input_handler.cpp
-- [X] T016 [US2] [FR-5] Implement gelbe LED-Logik (STEADY, nicht blinkend) in src/ampel_controller.cpp
-- [X] T017 [US2] [FR-5] Implement rote LED-Blinken (250ms cycle) für betroffene Spur in src/ampel_controller.cpp
-- [X] T018 [US2] [FR-5] Add test for Frühstart (inkl. IR-Schranke) in tests/test_fruehstart.cpp
+**Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
 ---
 
-## Phase 5: User Story 3 – Safety-Car/Pace-Car Modus (P3) [US3]
+## Phase 4: User Story 2 - Frühstart-Erkennung (Priority: P2)
 
-**Goal**: Alle gelben LEDs blinken synchron
-**Independent Test**: Safety-Car-Modus aktivieren, Blinken prüfen
+**Goal**: Detect false starts using the IR sensor and indicate them with LEDs.
 
-- [X] T019 [P] [US3] Implement Safety-Car-Modus in src/state_machine.cpp
-- [X] T020 [US3] Implement synchrones Blinken aller gelben LEDs in src/ampel_controller.cpp
-- [X] T021 [US3] Add test for Safety-Car-Modus in tests/test_safetycar.cpp
+**Independent Test**: Verify that false starts are detected and indicated correctly.
 
----
+### Tests for User Story 2
 
-## Phase 6: User Story 4 – Rennunterbrechung/Chaos (P4) [US4]
+- [ ] T016 [P] [US2] Unit test for false start detection in `tests/test_fruehstart.cpp`
+- [ ] T017 [P] [US2] Integration test for false start handling in `tests/test_integration.cpp`
 
-**Goal**: Alle roten LEDs blinken bei Chaos/Rennunterbrechung
-**Independent Test**: Modus auslösen, Blinken prüfen
+### Implementation for User Story 2
 
-- [X] T022 [P] [US4] Implement Chaos/Rennunterbrechung-Modus in src/state_machine.cpp
-- [X] T023 [US4] Implement synchrones Blinken aller roten LEDs in src/ampel_controller.cpp
-- [X] T024 [US4] Add test for Chaos-Modus in tests/test_chaos.cpp
+- [ ] T018 [P] [US2] Implement false start detection logic in `src/input_handler.cpp`
+- [ ] T019 [US2] Add false start indication logic to `src/ampel_controller.cpp`
+- [ ] T020 [US2] Integrate false start handling with `StateMachine` in `src/state_machine.cpp`
+- [ ] T021 [US2] Add logging for false start events
 
----
-
-## Phase 7: User Story 5 – Rennende/Siegeranzeige (P5) [US5]
-
-**Goal**: Nach Rennende blinken alle grünen LEDs, Sieger-rote LED bleibt an
-**Independent Test**: Rennende auslösen, Anzeige prüfen
-
-- [X] T025 [P] [US5] Implement Rennende/Siegeranzeige in src/state_machine.cpp
-- [X] T026 [US5] Implement grünes LED-Blinken und Sieger-rote LED in src/ampel_controller.cpp
-- [X] T027 [US5] Add test for Rennende/Siegeranzeige in tests/test_rennende.cpp
+**Checkpoint**: At this point, User Story 2 should be fully functional and testable independently
 
 ---
 
+## Phase 5: User Story 3 - Safety-Car/Pace-Car Modus (Priority: P3)
 
-## Phase 8: Edge Case Tests & Polish
+**Goal**: Implement the Safety-Car mode where all yellow LEDs blink synchronously.
 
-- [X] T028 [P] Add documentation for wiring and usage in docs/
-- [X] T029 [P] Add code comments and clean up
-- [X] T030 [P] Final integration test for all modes in tests/test_integration.cpp
+**Independent Test**: Verify that the Safety-Car mode works as described.
 
-# Edge Case Tests
-- [X] T031 [P] Test gleichzeitiges Drücken mehrerer Taster/GPIO in tests/test_edgecases.cpp
-- [X] T032 [P] Test Verhalten bei Stromausfall während Sequenz in tests/test_edgecases.cpp
-- [X] T033 [P] Test gleichzeitiger externer Trigger und Taster in tests/test_edgecases.cpp
-- [X] T034 [P] Test Reset während Blinkmodus in tests/test_edgecases.cpp
+### Tests for User Story 3
+
+- [ ] T022 [P] [US3] Unit test for Safety-Car mode in `tests/test_safetycar.cpp`
+- [ ] T023 [P] [US3] Integration test for Safety-Car mode in `tests/test_integration.cpp`
+
+### Implementation for User Story 3
+
+- [ ] T024 [P] [US3] Implement Safety-Car mode logic in `src/ampel_controller.cpp`
+- [ ] T025 [US3] Integrate Safety-Car mode with `StateMachine` in `src/state_machine.cpp`
+- [ ] T026 [US3] Add logging for Safety-Car mode events
+
+**Checkpoint**: At this point, User Story 3 should be fully functional and testable independently
 
 ---
 
-# IMPLEMENTATION COMPLETE ✓
+## Phase 6: User Story 4 - Rennunterbrechung/Chaos (Priority: P4)
 
-**Status**: Alle 34 Tasks abgeschlossen
-**Branch**: `001-startampel-carrera`
-**Commits**: 5 Feature Commits + 1 Final Commit
-**Test Coverage**: 18 Tests (Unit + Integration + Edge Cases)
-**Documentation**: README, Wiring Diagram, Test Guide
+**Goal**: Implement the Chaos mode where all red LEDs blink synchronously.
 
-----
+**Independent Test**: Verify that the Chaos mode works as described.
 
-## Dependencies
+### Tests for User Story 4
 
-- Phase 1 & 2 müssen abgeschlossen sein, bevor User Stories umgesetzt werden
-- User Stories können nach Phase 2 parallel entwickelt werden
-- Polish-Phase erst nach Abschluss aller User Stories
+- [ ] T027 [P] [US4] Unit test for Chaos mode in `tests/test_chaos.cpp`
+- [ ] T028 [P] [US4] Integration test for Chaos mode in `tests/test_integration.cpp`
 
-## Parallel Execution Examples
+### Implementation for User Story 4
 
-- T003, T004, T005–T009 können parallel erledigt werden
-- Alle [P]-markierten Tasks pro User Story sind parallel ausführbar
+- [ ] T029 [P] [US4] Implement Chaos mode logic in `src/ampel_controller.cpp`
+- [ ] T030 [US4] Integrate Chaos mode with `StateMachine` in `src/state_machine.cpp`
+- [ ] T031 [US4] Add logging for Chaos mode events
 
-## MVP Scope
+**Checkpoint**: At this point, User Story 4 should be fully functional and testable independently
 
-- Phase 3 (User Story 1) ist das MVP: Startsequenz & Startfreigabe
+---
 
-## Implementation Strategy
+## Phase 7: User Story 5 - Rennende/Siegeranzeige (Priority: P5)
 
-- MVP first (US1), dann inkrementell weitere User Stories
-- Jede Story unabhängig testbar
+**Goal**: Implement the race end and winner indication functionality.
+
+**Independent Test**: Verify that the race end and winner indication work as described.
+
+### Tests for User Story 5
+
+- [ ] T032 [P] [US5] Unit test for race end in `tests/test_rennende.cpp`
+- [ ] T033 [P] [US5] Integration test for race end in `tests/test_integration.cpp`
+
+### Implementation for User Story 5
+
+- [ ] T034 [P] [US5] Implement race end logic in `src/ampel_controller.cpp`
+- [ ] T035 [US5] Integrate race end logic with `StateMachine` in `src/state_machine.cpp`
+- [ ] T036 [US5] Add logging for race end events
+
+**Checkpoint**: At this point, User Story 5 should be fully functional and testable independently
+
+---
+
+## Final Phase: Polish & Cross-Cutting Concerns
+
+**Purpose**: Finalize the implementation with cross-cutting concerns and polish.
+
+- [ ] T037 Conduct full-system integration tests
+- [ ] T038 Perform code review and add comments
+- [ ] T039 Optimize performance (e.g., debounce timing, LED updates)
+- [ ] T040 Update documentation (README, user guides)
+- [ ] T041 Prepare final release (versioning, changelog)
 
 ---

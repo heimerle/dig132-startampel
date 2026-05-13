@@ -152,6 +152,10 @@ IDLE --[Start]--> STARTSEQUENCE --[Completion]--> STARTFREIGABE
 - **[wiring.md](./docs/wiring.md)** – Verdrahtungsschema und Schaltpläne
 - **[Spezifikation](./specs/001-startampel-carrera/spec.md)** – Anforderungen und Features
 - **[Implementierungsplan](./specs/001-startampel-carrera/plan.md)** – Architektur und Design
+- **[Technisches Design Phase 1](./specs/001-startampel-carrera/technical-design.md)** – Architektur, Timing, Zustandslogik
+- **[Schaltplan Phase 1](./specs/001-startampel-carrera/schaltplan.md)** – konkrete Verdrahtung und Pinmapping
+- **[Technisches Design Phase 2](./specs/002-production-ready/technical-design.md)** – Produktionsdesign und Erweiterungen
+- **[Schaltplan Phase 2](./specs/002-production-ready/schaltplan.md)** – Produktionsverdrahtung und Betriebshinweise
 - **[Taskliste](./specs/001-startampel-carrera/tasks.md)** – Implementierte Tasks (34/34 ✓)
 
 ### 🛒 Hardware & Beschaffung
