@@ -12,6 +12,16 @@ Elektrische Verdrahtung fuer 2 Spuren (erweiterbar auf 4), ausgelegt fuer D1 Min
 - Breadboard + Jumperkabel
 - Optional: 100 uF Elko zwischen 5V und GND
 
+## Verfuegbarer Bestand (13.05.2026)
+- 2x ESP32-CAM
+- 5x KY-004 Taster Modul
+- 1x LED-Sortiment (AZDelivery, 350 Stueck)
+
+Abgeleitete Nutzung:
+- Controller: ESP32-CAM als primaerer Controller, zweiter ESP32-CAM als Backup
+- Buttons: 4x KY-004 im Betrieb, 1x Reserve
+- LEDs: Auswahl aus vorhandenem Sortiment (rot/gelb/gruen)
+
 ## Schaltregeln
 - Jede LED in Serie mit eigenem Vorwiderstand
 - Gemeinsame Masse (Common GND) fuer alle Komponenten

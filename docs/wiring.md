@@ -1,5 +1,16 @@
 # Wiring Diagram - Startampel für Carrera-Bahn
 
+## Aktuell verfuegbare Hardware
+
+- 2x ESP32-CAM
+- 5x KY-004 Taster Modul
+- 1x LED-Sortiment (350 LEDs, 3mm/5mm)
+
+Praktische Nutzung:
+- 1x ESP32-CAM als aktiver Controller, 1x als Reserve/Testgeraet
+- KY-004 Module fuer Start/Stop/Reset/Mode + 1 Reserve
+- LEDs aus dem vorhandenen Sortiment entnehmen (rot/gelb/gruen bevorzugt 5mm)
+
 ## Komponenten übersicht
 
 ```
@@ -35,6 +46,10 @@ D8 -- [Button_STOP] -- GND
 RX -- [Button_RESET] -- GND
 TX -- [Button_MODE] -- GND
 ```
+
+Hinweis zu KY-004:
+- Das KY-004 ist ein digitales Tastermodul und kann direkt als Schaltsignal auf GPIO genutzt werden.
+- Logik im Code weiterhin mit Debounce (30ms) behandeln.
 
 ## GPIO-Trigger (externe Steuerung)
 

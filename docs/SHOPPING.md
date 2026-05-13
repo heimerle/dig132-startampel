@@ -2,6 +2,14 @@
 
 Direkt klickbare Links für schnelle Bestellungen (Stand: Mai 2026)
 
+## Bereits vorhanden (nicht erneut bestellen)
+
+- 2x ESP32-CAM
+- 5x AZDelivery KY-004 Taster Modul
+- 1x AZDelivery LED Leuchtdioden Sortiment (350 Stueck)
+
+Empfehlung fuer den Einkauf: Fokus auf fehlende Teile wie Widerstaende, Breadboard, Jumper, IR-Lichtschranke und stabile 5V-Versorgung.
+
 ## 🏪 Empfohlene Variante A: AZ-Delivery (Deutschlands größter Arduino-Elektronik-Shop)
 
 ### Komplette Bestellung (~€50-60)

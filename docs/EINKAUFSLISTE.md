@@ -2,6 +2,17 @@
 
 Vollständige Komponentenliste für den D1 Mini-basierten Startampel mit Links zu **AZ-Delivery** und **Amazon** (Deutschland).
 
+## Aktueller Bestand (Stand: 13.05.2026)
+
+- 2x ESP32-CAM
+- 5x AZDelivery KY-004 Taster Modul
+- 1x AZDelivery LED Leuchtdioden Sortiment (350 Stueck, 3mm/5mm, 5 Farben, UV/RGB CC/CA)
+
+Hinweis:
+- Fuer die aktuelle Firmware werden Standard-LEDs (rot/gelb/gruen) und digitale Taster-Eingaenge genutzt.
+- Ein ESP32-CAM kann als Controller verwendet werden, der zweite als Reserve/Test-Controller.
+- Durch den vorhandenen Bestand reduziert sich die notwendige Neubeschaffung deutlich.
+
 ## 📋 Komponenten-Übersicht
 
 | # | Komponente | Menge | AZ-Delivery | Amazon | Preis (ca.) |
@@ -205,6 +216,11 @@ Falls einzeln teuer erscheint, diese Sets:
 ---
 
 ## 📝 Einkaufs-Checkliste
+
+### Bereits vorhanden
+- [x] 2x ESP32-CAM
+- [x] 5x KY-004 Taster Modul
+- [x] 1x LED-Sortiment (AZDelivery, 350 Stueck)
 
 ### Schritt 1: Essenzielle Komponenten (Priorität 1)
 - [ ] 1x D1 Mini ESP8266
