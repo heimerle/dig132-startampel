@@ -12,15 +12,17 @@ Hinweis:
 - Fuer die aktuelle Firmware werden Standard-LEDs (rot/gelb/gruen) und digitale Taster-Eingaenge genutzt.
 - Ein ESP32-CAM kann als Controller verwendet werden, der zweite als Reserve/Test-Controller.
 - Durch den vorhandenen Bestand reduziert sich die notwendige Neubeschaffung deutlich.
+- Es sind 10 LED-Plaetze vorgesehen; aktuell werden 6 aktiv genutzt und 4 als Reserve/Erweiterung eingeplant.
+- Vorhandene RGB-LEDs koennen optional genutzt werden (pro Kanal mit eigenem Vorwiderstand).
 
 ## 📋 Komponenten-Übersicht
 
 | # | Komponente | Menge | AZ-Delivery | Amazon | Preis (ca.) |
 |---|-----------|-------|-------------|--------|------------|
 | 1 | D1 Mini (ESP8266) | 1x | [Link](#d1-mini) | [Link](#d1-mini-amazon) | €8-12 |
-| 2 | LED rot 5mm | 2x | [Link](#led-rot) | [Link](#led-rot-amazon) | €0,50-1 |
-| 3 | LED gelb 5mm | 2x | [Link](#led-gelb) | [Link](#led-gelb-amazon) | €0,50-1 |
-| 4 | LED grün 5mm | 2x | [Link](#led-gruen) | [Link](#led-gruen-amazon) | €0,50-1 |
+| 2 | LED rot 5mm | 2x aktiv (Reserve verfuegbar) | [Link](#led-rot) | [Link](#led-rot-amazon) | €0,50-1 |
+| 3 | LED gelb 5mm | 2x aktiv (Reserve verfuegbar) | [Link](#led-gelb) | [Link](#led-gelb-amazon) | €0,50-1 |
+| 4 | LED grün 5mm | 2x aktiv (Reserve verfuegbar) | [Link](#led-gruen) | [Link](#led-gruen-amazon) | €0,50-1 |
 | 5 | Widerstand 220Ω | 10x | [Link](#r220) | [Link](#r220-amazon) | €1-2 |
 | 6 | Widerstand 10kΩ | 10x | [Link](#r10k) | [Link](#r10k-amazon) | €1-2 |
 | 7 | Kondensator 100µF | 2x | [Link](#c100) | [Link](#c100-amazon) | €1-2 |

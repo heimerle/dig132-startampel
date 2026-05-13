@@ -11,6 +11,18 @@ Praktische Nutzung:
 - KY-004 Module fuer Start/Stop/Reset/Mode + 1 Reserve
 - LEDs aus dem vorhandenen Sortiment entnehmen (rot/gelb/gruen bevorzugt 5mm)
 
+## LED-Plan (10 LED-Plaetze gesamt)
+
+- Benoetigte Farben: Rot, Gelb, Gruen
+- Verfuegbar: einzelne rote/gelbe/gruene LEDs + einige RGB-LEDs
+- Empfohlene Belegung:
+    - 6 aktive Plaetze fuer MVP: LED_ROT_1, LED_GELB_1, LED_GRUEN_1, LED_ROT_2, LED_GELB_2, LED_GRUEN_2
+    - 4 Reserve-Plaetze fuer Erweiterung/Statusanzeige
+
+Hinweis zu RGB-LEDs:
+- RGB-LEDs koennen als Ersatz verwendet werden, indem pro Platz nur ein Farbkanal (R/G/B) genutzt wird.
+- Bei RGB-LEDs pro Kanal immer eigenen Vorwiderstand einsetzen.
+
 ## Komponenten übersicht
 
 ```

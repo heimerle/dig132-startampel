@@ -5,7 +5,7 @@ Elektrische Verdrahtung fuer 2 Spuren (erweiterbar auf 4), ausgelegt fuer D1 Min
 
 ## Komponentenliste
 - 1x D1 Mini (ESP8266) oder ESP32 Dev Board
-- 6x LED (2x rot, 2x gelb, 2x gruen)
+- 10 LED-Plaetze gesamt (6 aktiv + 4 Reserve), Farben Rot/Gelb/Gruen
 - 6x Vorwiderstand 220-470 Ohm
 - 4x Taster (Start, Stop, Reset, Mode)
 - 1x IR-Lichtschranke (Digitalausgang)
@@ -20,7 +20,12 @@ Elektrische Verdrahtung fuer 2 Spuren (erweiterbar auf 4), ausgelegt fuer D1 Min
 Abgeleitete Nutzung:
 - Controller: ESP32-CAM als primaerer Controller, zweiter ESP32-CAM als Backup
 - Buttons: 4x KY-004 im Betrieb, 1x Reserve
-- LEDs: Auswahl aus vorhandenem Sortiment (rot/gelb/gruen)
+- LEDs: Auswahl aus vorhandenem Sortiment (rot/gelb/gruen), RGB-LEDs optional als Ersatz
+
+## LED-Belegung (10 Plaetze)
+- Aktiv im MVP: 6 Plaetze (2x Rot, 2x Gelb, 2x Gruen)
+- Reserve/Erweiterung: 4 Plaetze (z. B. Status, Spur-Upgrade, Debug)
+- RGB-Einsatz: pro LED-Platz nur ein Kanal nutzen und pro Kanal Vorwiderstand vorsehen
 
 ## Schaltregeln
 - Jede LED in Serie mit eigenem Vorwiderstand
