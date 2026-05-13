@@ -5,7 +5,7 @@ description: "Task list for implementing the Startampel feature"
 # Tasks: Startampel für Carrera-Bahn
 
 **Input**: Design documents from `/specs/001-startampel-carrera/`
-**Prerequisites**: plan.md (required), spec.md (required for user stories)
+**Prerequisites**: plan.md (required), spec.md (required for user stories), technical-design.md, schaltplan.md
 
 **Tests**: Tests are included where explicitly requested in the feature specification.
 
@@ -19,36 +19,32 @@ description: "Task list for implementing the Startampel feature"
 
 ---
 
-## Phase 0: Technical Design & Schematic
-
-**Purpose**: Lock architecture, interfaces, timing, and hardware wiring before implementation.
-
-- [ ] T000 [P] Create technical architecture document in `specs/001-startampel-carrera/technical-design.md`
-- [ ] T000a [P] Create wiring/schematic document in `specs/001-startampel-carrera/schaltplan.md`
-- [ ] T000b Resolve D1 Mini pin conflicts (IR vs Stop) in `src/config.h` and align docs
-
----
-
 ## Phase 1: Setup (Shared Infrastructure)
 
-**Purpose**: Project initialization and basic structure
+**Purpose**: Project initialization, architecture baseline, and hardware baseline
 
-- [ ] T001 Create project structure per implementation plan
-- [ ] T002 Initialize PlatformIO project with Arduino Core dependencies
-- [ ] T003 [P] Configure linting and formatting tools (e.g., clang-format)
-- [ ] T004 [P] Setup CI/CD workflows for build and test automation
-- [ ] T005 [P] Create base configuration file `src/config.h` with pin definitions
+- [ ] T001 Align implementation summary and constraints in `specs/001-startampel-carrera/plan.md`
+- [ ] T002 [P] Finalize architecture decisions in `specs/001-startampel-carrera/technical-design.md`
+- [ ] T003 [P] Finalize wiring and pin mapping in `specs/001-startampel-carrera/schaltplan.md`
+- [ ] T004 Resolve and document board-specific pin mapping in `src/config.h`
+- [ ] T005 [P] Align hardware documentation with final pin map in `docs/wiring.md`
+- [ ] T006 [P] Ensure CI build matrix covers D1 Mini and ESP32 in `.github/workflows/build.yml`
 
 ---
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-**Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
+**Purpose**: Shared firmware infrastructure required by all user stories
 
-- [ ] T006 Implement `InputHandler` for button debouncing in `src/input_handler.cpp`
-- [ ] T007 Implement `LedController` for LED abstraction in `src/led_controller.cpp`
-- [ ] T008 Implement `StateMachine` for managing race states in `src/state_machine.cpp`
-- [ ] T009 Create unit tests for foundational components in `tests/`
+- [ ] T007 Implement debounced input event normalization in `src/input_handler.cpp`
+- [ ] T008 [P] Expose stable input API contracts in `src/input_handler.h`
+- [ ] T009 Implement deterministic LED output primitives in `src/led_controller.cpp`
+- [ ] T010 [P] Expose LED control API for steady/blink patterns in `src/led_controller.h`
+- [ ] T011 Implement canonical state enum and transitions in `src/state_machine.cpp`
+- [ ] T012 [P] Expose state transition interface in `src/state_machine.h`
+- [ ] T013 Integrate foundational modules into main loop in `src/main.cpp`
+- [ ] T014 [P] Add foundational unit tests for input and LED primitives in `tests/test_input_handler.cpp`
+- [ ] T015 [P] Add foundational unit tests for state transitions in `tests/test_state_machine.cpp`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -62,15 +58,16 @@ description: "Task list for implementing the Startampel feature"
 
 ### Tests for User Story 1
 
-- [ ] T010 [P] [US1] Unit test for start sequence in `tests/test_startsequenz.cpp`
-- [ ] T011 [P] [US1] Integration test for start sequence in `tests/test_integration.cpp`
+- [ ] T016 [P] [US1] Add unit test for 5-step countdown timing in `tests/test_startsequenz.cpp`
+- [ ] T017 [P] [US1] Add integration test for start trigger to green release flow in `tests/test_integration.cpp`
+- [ ] T018 [P] [US1] Add reset-during-sequence regression test in `tests/test_edgecases.cpp`
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Implement start sequence logic in `src/ampel_controller.cpp`
-- [ ] T013 [US1] Add start release logic to `src/ampel_controller.cpp`
-- [ ] T014 [US1] Integrate start sequence with `StateMachine` in `src/state_machine.cpp`
-- [ ] T015 [US1] Add logging for start sequence events
+- [ ] T019 [US1] Implement non-blocking start countdown (500 ms steps) in `src/ampel_controller.cpp`
+- [ ] T020 [US1] Implement green release steady state in `src/ampel_controller.cpp`
+- [ ] T021 [US1] Wire start and reset transitions for sequence lifecycle in `src/state_machine.cpp`
+- [ ] T022 [US1] Route start/reset events through controller update loop in `src/main.cpp`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -84,15 +81,16 @@ description: "Task list for implementing the Startampel feature"
 
 ### Tests for User Story 2
 
-- [ ] T016 [P] [US2] Unit test for false start detection in `tests/test_fruehstart.cpp`
-- [ ] T017 [P] [US2] Integration test for false start handling in `tests/test_integration.cpp`
+- [ ] T023 [P] [US2] Add unit test for false start trigger detection in `tests/test_fruehstart.cpp`
+- [ ] T024 [P] [US2] Add integration test for yellow steady plus offender red blink in `tests/test_integration.cpp`
+- [ ] T025 [P] [US2] Add simultaneous input arbitration test (Last-Input-Wins) in `tests/test_edgecases.cpp`
 
 ### Implementation for User Story 2
 
-- [ ] T018 [P] [US2] Implement false start detection logic in `src/input_handler.cpp`
-- [ ] T019 [US2] Add false start indication logic to `src/ampel_controller.cpp`
-- [ ] T020 [US2] Integrate false start handling with `StateMachine` in `src/state_machine.cpp`
-- [ ] T021 [US2] Add logging for false start events
+- [ ] T026 [US2] Implement IR-based false start event generation in `src/input_handler.cpp`
+- [ ] T027 [US2] Implement false start LED pattern (yellow steady, red 250 ms blink) in `src/ampel_controller.cpp`
+- [ ] T028 [US2] Add false start transition and recovery rules in `src/state_machine.cpp`
+- [ ] T029 [US2] Integrate false start source priority handling in `src/main.cpp`
 
 **Checkpoint**: At this point, User Story 2 should be fully functional and testable independently
 
@@ -106,14 +104,14 @@ description: "Task list for implementing the Startampel feature"
 
 ### Tests for User Story 3
 
-- [ ] T022 [P] [US3] Unit test for Safety-Car mode in `tests/test_safetycar.cpp`
-- [ ] T023 [P] [US3] Integration test for Safety-Car mode in `tests/test_integration.cpp`
+- [ ] T030 [P] [US3] Add unit test for synchronized yellow blink pattern in `tests/test_safetycar.cpp`
+- [ ] T031 [P] [US3] Add integration test for entering and leaving safety-car mode in `tests/test_integration.cpp`
 
 ### Implementation for User Story 3
 
-- [ ] T024 [P] [US3] Implement Safety-Car mode logic in `src/ampel_controller.cpp`
-- [ ] T025 [US3] Integrate Safety-Car mode with `StateMachine` in `src/state_machine.cpp`
-- [ ] T026 [US3] Add logging for Safety-Car mode events
+- [ ] T032 [US3] Implement synchronized yellow 250 ms blink mode in `src/ampel_controller.cpp`
+- [ ] T033 [US3] Add safety-car activation and deactivation transitions in `src/state_machine.cpp`
+- [ ] T034 [US3] Map safety-car trigger inputs to state transitions in `src/main.cpp`
 
 **Checkpoint**: At this point, User Story 3 should be fully functional and testable independently
 
@@ -127,14 +125,14 @@ description: "Task list for implementing the Startampel feature"
 
 ### Tests for User Story 4
 
-- [ ] T027 [P] [US4] Unit test for Chaos mode in `tests/test_chaos.cpp`
-- [ ] T028 [P] [US4] Integration test for Chaos mode in `tests/test_integration.cpp`
+- [ ] T035 [P] [US4] Add unit test for synchronized red blink pattern in `tests/test_chaos.cpp`
+- [ ] T036 [P] [US4] Add integration test for chaos mode transition behavior in `tests/test_integration.cpp`
 
 ### Implementation for User Story 4
 
-- [ ] T029 [P] [US4] Implement Chaos mode logic in `src/ampel_controller.cpp`
-- [ ] T030 [US4] Integrate Chaos mode with `StateMachine` in `src/state_machine.cpp`
-- [ ] T031 [US4] Add logging for Chaos mode events
+- [ ] T037 [US4] Implement synchronized red 250 ms blink mode in `src/ampel_controller.cpp`
+- [ ] T038 [US4] Add chaos activation and reset behavior in `src/state_machine.cpp`
+- [ ] T039 [US4] Map chaos trigger inputs to state transitions in `src/main.cpp`
 
 **Checkpoint**: At this point, User Story 4 should be fully functional and testable independently
 
@@ -148,27 +146,88 @@ description: "Task list for implementing the Startampel feature"
 
 ### Tests for User Story 5
 
-- [ ] T032 [P] [US5] Unit test for race end in `tests/test_rennende.cpp`
-- [ ] T033 [P] [US5] Integration test for race end in `tests/test_integration.cpp`
+- [ ] T040 [P] [US5] Add unit test for race-end green blink plus winner red steady in `tests/test_rennende.cpp`
+- [ ] T041 [P] [US5] Add integration test for race-end event flow in `tests/test_integration.cpp`
 
 ### Implementation for User Story 5
 
-- [ ] T034 [P] [US5] Implement race end logic in `src/ampel_controller.cpp`
-- [ ] T035 [US5] Integrate race end logic with `StateMachine` in `src/state_machine.cpp`
-- [ ] T036 [US5] Add logging for race end events
+- [ ] T042 [US5] Implement race-end LED behavior (green blink + winner red steady) in `src/ampel_controller.cpp`
+- [ ] T043 [US5] Add winner-state transition rules in `src/state_machine.cpp`
+- [ ] T044 [US5] Map race-end and winner inputs into event handling in `src/main.cpp`
 
 **Checkpoint**: At this point, User Story 5 should be fully functional and testable independently
 
 ---
 
-## Final Phase: Polish & Cross-Cutting Concerns
+## Phase 8: Polish & Cross-Cutting Concerns
 
 **Purpose**: Finalize the implementation with cross-cutting concerns and polish.
 
-- [ ] T037 Conduct full-system integration tests
-- [ ] T038 Perform code review and add comments
-- [ ] T039 Optimize performance (e.g., debounce timing, LED updates)
-- [ ] T040 Update documentation (README, user guides)
-- [ ] T041 Prepare final release (versioning, changelog)
+- [ ] T045 [P] Run complete mode regression suite in `tests/test_integration.cpp`
+- [ ] T046 [P] Add edge-case regression coverage (simultaneous inputs, reset during blink, power-cycle behavior) in `tests/test_edgecases.cpp`
+- [ ] T047 Optimize timing and debounce constants against performance goals in `src/config.h`
+- [ ] T048 [P] Sync implementation behavior with user docs in `docs/BEDIENUNG.md`
+- [ ] T049 [P] Sync wiring and troubleshooting notes with final behavior in `docs/wiring.md`
+- [ ] T050 Update feature completion checklist in `specs/001-startampel-carrera/checklists/requirements.md`
 
 ---
+
+## Dependencies & Execution Order
+
+### Phase Dependencies
+
+- **Phase 1 (Setup)**: can start immediately
+- **Phase 2 (Foundational)**: depends on Setup completion and blocks all user stories
+- **Phase 3-7 (User Stories)**: depend on Foundational completion; run in priority order or in parallel by team capacity
+- **Phase 8 (Polish)**: depends on completion of all selected user stories
+
+### User Story Dependencies
+
+- **US1 (P1)**: no dependency on other stories; establishes MVP baseline
+- **US2 (P2)**: depends on US1 start-sequence context
+- **US3 (P3)**: can start after foundational phase; integrates with race-running context
+- **US4 (P4)**: can start after foundational phase; independent from US3 logic implementation
+- **US5 (P5)**: depends on race-state model established by US1-US4
+
+### Within Each User Story
+
+- Tests first, then implementation
+- Controller logic before final main-loop wiring
+- Story must pass its independent test before moving forward
+
+---
+
+## Parallel Execution Examples
+
+### User Story 1
+
+- Run T016 and T017 in parallel (different test files)
+
+### User Story 2
+
+- Run T023 and T025 in parallel (different test files)
+
+### Foundational
+
+- Run T008, T010, and T012 in parallel (different header files)
+
+---
+
+## Implementation Strategy
+
+### MVP First (US1)
+
+1. Complete Phase 1 (Setup)
+2. Complete Phase 2 (Foundational)
+3. Complete Phase 3 (US1)
+4. Validate US1 independently via T016-T018
+
+### Incremental Delivery
+
+1. Deliver US1 (MVP)
+2. Deliver US2 (false start fairness)
+3. Deliver US3 (safety-car mode)
+4. Deliver US4 (chaos mode)
+5. Deliver US5 (race-end winner indication)
+6. Execute Phase 8 polish and regression
+
