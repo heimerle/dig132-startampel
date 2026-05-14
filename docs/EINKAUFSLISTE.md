@@ -8,12 +8,26 @@ Vollständige Komponentenliste für den D1 Mini-basierten Startampel mit Links z
 - 5x AZDelivery KY-004 Taster Modul
 - 1x AZDelivery LED Leuchtdioden Sortiment (350 Stueck, 3mm/5mm, 5 Farben, UV/RGB CC/CA)
 
+### Widerstands-Bestand
+
+- 10 Ohm x 10
+- 220 Ohm x 20
+- 330 Ohm x 10
+- 1 kOhm x 10
+- 2 kOhm x 10
+- 5.1 kOhm x 10
+- 10 kOhm x 9
+- 100 kOhm x 10
+- 1 MOhm x 10
+
 Hinweis:
 - Fuer die aktuelle Firmware werden Standard-LEDs (rot/gelb/gruen) und digitale Taster-Eingaenge genutzt.
 - Ein ESP32-CAM kann als Controller verwendet werden, der zweite als Reserve/Test-Controller.
 - Durch den vorhandenen Bestand reduziert sich die notwendige Neubeschaffung deutlich.
 - Es sind 10 LED-Plaetze vorgesehen; aktuell werden 6 aktiv genutzt und 4 als Reserve/Erweiterung eingeplant.
 - Vorhandene RGB-LEDs koennen optional genutzt werden (pro Kanal mit eigenem Vorwiderstand).
+- 220 Ohm Widerstaende sind fuer LED-Vorwiderstaende ausreichend vorhanden.
+- 10 kOhm Widerstaende sind fast ausreichend (9 vorhanden), ein Reservekauf ist optional.
 
 ## 📋 Komponenten-Übersicht
 
@@ -23,8 +37,8 @@ Hinweis:
 | 2 | LED rot 5mm | 2x aktiv (Reserve verfuegbar) | [Link](#led-rot) | [Link](#led-rot-amazon) | €0,50-1 |
 | 3 | LED gelb 5mm | 2x aktiv (Reserve verfuegbar) | [Link](#led-gelb) | [Link](#led-gelb-amazon) | €0,50-1 |
 | 4 | LED grün 5mm | 2x aktiv (Reserve verfuegbar) | [Link](#led-gruen) | [Link](#led-gruen-amazon) | €0,50-1 |
-| 5 | Widerstand 220Ω | 10x | [Link](#r220) | [Link](#r220-amazon) | €1-2 |
-| 6 | Widerstand 10kΩ | 10x | [Link](#r10k) | [Link](#r10k-amazon) | €1-2 |
+| 5 | Widerstand 220Ω | 10x benoetigt (20x vorhanden) | [Link](#r220) | [Link](#r220-amazon) | €1-2 |
+| 6 | Widerstand 10kΩ | 10x benoetigt (9x vorhanden) | [Link](#r10k) | [Link](#r10k-amazon) | €1-2 |
 | 7 | Kondensator 100µF | 2x | [Link](#c100) | [Link](#c100-amazon) | €1-2 |
 | 8 | Taster (6x6mm) | 5x | [Link](#button) | [Link](#button-amazon) | €2-3 |
 | 9 | IR-Lichtschranke | 1x | [Link](#ir) | [Link](#ir-amazon) | €5-8 |
@@ -223,13 +237,14 @@ Falls einzeln teuer erscheint, diese Sets:
 - [x] 2x ESP32-CAM
 - [x] 5x KY-004 Taster Modul
 - [x] 1x LED-Sortiment (AZDelivery, 350 Stueck)
+- [x] 220 Ohm Widerstaende (20x)
+- [x] Weitere Widerstandswerte fuer Tests/Erweiterungen (10 Ohm, 330 Ohm, 1 kOhm, 2 kOhm, 5.1 kOhm, 100 kOhm, 1 MOhm)
 
 ### Schritt 1: Essenzielle Komponenten (Priorität 1)
 - [ ] 1x D1 Mini ESP8266
 - [ ] 1x USB Micro-B Kabel
 - [ ] 6x LEDs (2x rot, 2x gelb, 2x grün)
-- [ ] 10x Widerstand 220Ω
-- [ ] 10x Widerstand 10kΩ
+- [ ] Optional: 1-5x Widerstand 10kΩ als Reserve
 - [ ] 2x Kondensator 100µF
 - [ ] 5x Taster 6x6mm
 - [ ] 1x Breadboard 830
