@@ -23,8 +23,15 @@ Vollständige Komponentenliste für den D1 Mini-basierten Startampel mit Links z
 ### Kondensator-Bestand
 
 - 1000 uF 35V x ca. 20
+- 1000 uF 63V x 4
+- 15 uF x 1
+- 100 nF (104) x 1
 - 1 nF 1kV x 5
 - B20 x 5
+
+### Halbleiter-Bestand
+
+- BC548B x 3
 
 Hinweis:
 - Fuer die aktuelle Firmware werden Standard-LEDs (rot/gelb/gruen) und digitale Taster-Eingaenge genutzt.
@@ -35,6 +42,7 @@ Hinweis:
 - 220 Ohm Widerstaende sind fuer LED-Vorwiderstaende ausreichend vorhanden.
 - 10 kOhm Widerstaende sind fast ausreichend (9 vorhanden), ein Reservekauf ist optional.
 - 1000 uF 35V Kondensatoren sind als Bulk-Puffer ausreichend vorhanden.
+- 100 nF (104) sind vorhanden, aber nur 1 Stueck; fuer saubere Entkopplung sind mehrere 100 nF sinnvoll.
 
 ## 📋 Komponenten-Übersicht
 
