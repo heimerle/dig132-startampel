@@ -2,6 +2,28 @@
 
 Direkt klickbare Links für schnelle Bestellungen (Stand: Mai 2026)
 
+## Simple Liste: Noch zu kaufen
+
+1. IR-Lichtschranke
+   - AZ-Delivery: https://www.az-delivery.de/products/infrarot-lichtschranke
+   - Amazon: https://www.amazon.de/s?k=IR+lichtschranke+modul
+2. Breadboard (830)
+   - AZ-Delivery: https://www.az-delivery.de/products/steckplatine-830-er
+   - Amazon: https://www.amazon.de/s?k=breadboard+830
+3. Jumper Kabel Set
+   - AZ-Delivery: https://www.az-delivery.de/products/jumper-kabel
+   - Amazon: https://www.amazon.de/s?k=jumper+kabel+set
+4. 5V Netzteil (mindestens 2A)
+   - AZ-Delivery: https://www.az-delivery.de/products/5v-2a-usb-netzteil
+   - Amazon: https://www.amazon.de/s?k=5v+netzteil+2a+usb
+5. Keramik-Kondensatoren 100 nF (fuer Entkopplung, empfohlen)
+   - AZ-Delivery: https://www.az-delivery.de/products/kondensator-sortiment
+   - Amazon: https://www.amazon.de/s?k=100nf+keramik+kondensator
+
+Optional:
+- 10 kOhm Widerstaende als Reserve
+  - Amazon: https://www.amazon.de/s?k=10k+ohm+widerstand
+
 ## Bereits vorhanden (nicht erneut bestellen)
 
 - 2x ESP32-CAM
