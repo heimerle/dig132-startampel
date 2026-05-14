@@ -25,7 +25,7 @@ Vollständige Komponentenliste für den D1 Mini-basierten Startampel mit Links z
 - 1000 uF 35V x ca. 20
 - 1000 uF 63V x 4
 - 15 uF x 1
-- 100 nF (104) x 1
+- 100 nF (104) x 2
 - 1 nF 1kV x 5
 - B20 x 5
 
@@ -42,7 +42,7 @@ Hinweis:
 - 220 Ohm Widerstaende sind fuer LED-Vorwiderstaende ausreichend vorhanden.
 - 10 kOhm Widerstaende sind fast ausreichend (9 vorhanden), ein Reservekauf ist optional.
 - 1000 uF 35V Kondensatoren sind als Bulk-Puffer ausreichend vorhanden.
-- 100 nF (104) sind vorhanden, aber nur 1 Stueck; fuer saubere Entkopplung sind mehrere 100 nF sinnvoll.
+- 100 nF (104) sind vorhanden, aber nur 2 Stueck; fuer saubere Entkopplung sind ggf. weitere 100 nF sinnvoll.
 
 ## 📋 Komponenten-Übersicht
 

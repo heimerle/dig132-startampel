@@ -30,10 +30,10 @@ Optional:
 - 5x AZDelivery KY-004 Taster Modul
 - 1x AZDelivery LED Leuchtdioden Sortiment (350 Stueck)
 - Widerstaende: 10 Ohm (10x), 220 Ohm (20x), 330 Ohm (10x), 1 kOhm (10x), 2 kOhm (10x), 5,1 kOhm (10x), 10 kOhm (9x), 100 kOhm (10x), 1 MOhm (10x)
-- Kondensatoren: 1000 uF 35V (ca. 20x), 1000 uF 63V (4x), 15 uF (1x), 100 nF (104) (1x), 1 nF 1kV (5x), B20 (5x)
+- Kondensatoren: 1000 uF 35V (ca. 20x), 1000 uF 63V (4x), 15 uF (1x), 100 nF (104) (2x), 1 nF 1kV (5x), B20 (5x)
 - Halbleiter: BC548B (3x)
 
-Empfehlung fuer den Einkauf: Fokus auf fehlende Teile wie Breadboard, Jumper, IR-Lichtschranke und stabile 5V-Versorgung. Widerstaende sind weitgehend vorhanden (optional 10 kOhm Reserve nachkaufen). Bei 100 nF Kondensatoren ist aktuell nur 1 Stueck vorhanden, daher sind weitere 100 nF weiterhin empfohlen.
+Empfehlung fuer den Einkauf: Fokus auf fehlende Teile wie Breadboard, Jumper, IR-Lichtschranke und stabile 5V-Versorgung. Widerstaende sind weitgehend vorhanden (optional 10 kOhm Reserve nachkaufen). Bei 100 nF Kondensatoren sind aktuell 2 Stueck vorhanden, weitere 100 nF sind optional sinnvoll.
 
 ## 🏪 Empfohlene Variante A: AZ-Delivery (Deutschlands größter Arduino-Elektronik-Shop)
 
