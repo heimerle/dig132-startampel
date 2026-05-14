@@ -7,9 +7,10 @@ Direkt klickbare Links für schnelle Bestellungen (Stand: Mai 2026)
 - 2x ESP32-CAM
 - 5x AZDelivery KY-004 Taster Modul
 - 1x AZDelivery LED Leuchtdioden Sortiment (350 Stueck)
-- Widerstaende: 10 Ohm (10x), 220 Ohm (20x), 330 Ohm (10x), 1 kOhm (10x), 2 kOhm (10x), 5.1 kOhm (10x), 10 kOhm (9x), 100 kOhm (10x), 1 MOhm (10x)
+- Widerstaende: 10 Ohm (10x), 220 Ohm (20x), 330 Ohm (10x), 1 kOhm (10x), 2 kOhm (10x), 5,1 kOhm (10x), 10 kOhm (9x), 100 kOhm (10x), 1 MOhm (10x)
+- Kondensatoren: 1000 uF 35V (ca. 20x), 1 nF 1kV (5x), B20 (5x)
 
-Empfehlung fuer den Einkauf: Fokus auf fehlende Teile wie Breadboard, Jumper, IR-Lichtschranke und stabile 5V-Versorgung. Widerstaende sind weitgehend vorhanden (optional 10 kOhm Reserve nachkaufen).
+Empfehlung fuer den Einkauf: Fokus auf fehlende Teile wie Breadboard, Jumper, IR-Lichtschranke und stabile 5V-Versorgung. Widerstaende sind weitgehend vorhanden (optional 10 kOhm Reserve nachkaufen), Kondensatoren sind ebenfalls gut verfuegbar.
 
 ## 🏪 Empfohlene Variante A: AZ-Delivery (Deutschlands größter Arduino-Elektronik-Shop)
 

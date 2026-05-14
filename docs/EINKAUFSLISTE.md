@@ -2,7 +2,7 @@
 
 Vollständige Komponentenliste für den D1 Mini-basierten Startampel mit Links zu **AZ-Delivery** und **Amazon** (Deutschland).
 
-## Aktueller Bestand (Stand: 13.05.2026)
+## Aktueller Bestand (Stand: 14.05.2026)
 
 - 2x ESP32-CAM
 - 5x AZDelivery KY-004 Taster Modul
@@ -15,10 +15,16 @@ Vollständige Komponentenliste für den D1 Mini-basierten Startampel mit Links z
 - 330 Ohm x 10
 - 1 kOhm x 10
 - 2 kOhm x 10
-- 5.1 kOhm x 10
+- 5,1 kOhm x 10
 - 10 kOhm x 9
 - 100 kOhm x 10
 - 1 MOhm x 10
+
+### Kondensator-Bestand
+
+- 1000 uF 35V x ca. 20
+- 1 nF 1kV x 5
+- B20 x 5
 
 Hinweis:
 - Fuer die aktuelle Firmware werden Standard-LEDs (rot/gelb/gruen) und digitale Taster-Eingaenge genutzt.
@@ -28,6 +34,7 @@ Hinweis:
 - Vorhandene RGB-LEDs koennen optional genutzt werden (pro Kanal mit eigenem Vorwiderstand).
 - 220 Ohm Widerstaende sind fuer LED-Vorwiderstaende ausreichend vorhanden.
 - 10 kOhm Widerstaende sind fast ausreichend (9 vorhanden), ein Reservekauf ist optional.
+- 1000 uF 35V Kondensatoren sind als Bulk-Puffer ausreichend vorhanden.
 
 ## 📋 Komponenten-Übersicht
 
