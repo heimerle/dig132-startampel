@@ -5,15 +5,15 @@ Elektrische Verdrahtung fuer 2 Spuren (erweiterbar), mit ESP32-CAM als Computing
 
 ## Komponentenliste
 - 1x ESP32-CAM (AI Thinker)
-- 1x 74HC595 (8 digitale Ausgaenge fuer LED-Kanaele)
-- 1x PCF8574/PCF8574A (8 digitale Eingaenge fuer Taster/Trigger/IR)
-- 10 LED-Plaetze gesamt (6 aktiv + 4 Reserve), Farben Rot/Gelb/Gruen
-- 6x Vorwiderstand 220-470 Ohm (empfohlen 330 Ohm)
-- 4x Taster (Start, Stop, Reset, Mode)
+- 2x 74HC595 (LED-Ausgaenge, in Serie geschaltet)
+- 1x PCF8574/PCF8574A (Eingaenge)
+- 10x LED (4x rot + 2x gelb + 4x gruen)
+- 10x Vorwiderstand 330 Ohm (empfohlen)
+- 4x KY-004 Taster Modul
 - 1x IR-Lichtschranke (Digitalausgang)
 - Breadboard + Jumperkabel
 - Optional: 100 uF Elko zwischen 5V und GND
-- Optional: 2x 100 nF (je 1x fuer 74HC595 und PCF8574 nah am IC)
+- Optional: 3x 100 nF (je 1x fuer 74HC595_1, 74HC595_2 und PCF8574 nah am IC)
 
 ## Verfuegbarer Bestand (13.05.2026)
 - 2x ESP32-CAM
@@ -25,17 +25,33 @@ Abgeleitete Nutzung:
 - Buttons: 4x KY-004 im Betrieb, 1x Reserve
 - LEDs: Auswahl aus vorhandenem Sortiment (rot/gelb/gruen), RGB-LEDs optional als Ersatz
 
-## LED-Belegung (10 Plaetze)
-- Aktiv im MVP: 6 Plaetze (2x Rot, 2x Gelb, 2x Gruen)
-- Reserve/Erweiterung: 4 Plaetze (z. B. Status, Spur-Upgrade, Debug)
-- RGB-Einsatz: pro LED-Platz nur ein Kanal nutzen und pro Kanal Vorwiderstand vorsehen
+## LED-Belegung (10 Plaetze, exakte physische Montage)
 
-## Schaltregeln
-- Jede LED in Serie mit eigenem Vorwiderstand
-- Gemeinsame Masse (Common GND) fuer alle Komponenten
-- Eingaenge active-low gegen GND schalten
-- Externe Trigger galvanisch sauber an GND-Referenz binden
-- 74HC595 und PCF8574 auf 3V3 betreiben
+**Spur 1 (links, via 74HC595_1):**
+- 2x Rot oben (Q0, Q1)
+- 1x Gelb Mitte oben (Q2)
+- 2x Gruen unten (Q3, Q4)
+
+**Spur 2 (rechts, via 74HC595_2):**
+- 2x Rot oben (Q0, Q1)
+- 1x Gelb Mitte unten (Q2)
+- 2x Gruen unten (Q3, Q4)
+
+**Reservekanaele:** 74HC595_1 Q5-Q fuer Dual 74HC595)
+
+### ESP32-CAM zu 74HC595 (gemeinsam fuer beide ICs)
+| Funktion | ESP32-CAM Pin |
+|---|---|
+| DS (Daten) | GPIO13 |
+| SHCP (Takt) | GPIO14 |
+| STCP (Latch) | GPIO15 |
+
+### 74HC595 Verkettung
+| Pin | Verbindung |
+|---|---|
+| 74HC595_1 QH' (9) | 74HC595_2 DS (14) |
+| 74HC595_1/74HC595_2 SHCP | GPIO14 (gemeinsam) |
+| 74HC595_1/74HC595_2 STCP | GPIO15 (gemeinsam)uf 3V3 betreiben
 
 ## ESP32-CAM Pinbelegung (Normativ)
 
@@ -44,39 +60,54 @@ Abgeleitete Nutzung:
 |---|---|
 | DS (Daten) | GPIO13 |
 | SHCP (Takt) | GPIO14 |
-| STCP (Latch) | GPIO15 |
+| STCP (Lat_1 Ausgaenge (Spur 1)
+| Ausgang | Funktion | Position |
+|---|---|---|
+| Q0 | LED Spur1 Rot 1 | oben links |
+| Q1 | LED Spur1 Rot 2 | oben rechts |
+| Q2 | LED Spur1 Gelb | Mitte oben |
+| Q3 | LED Spur1 Gruen 1 | unten links |
+| Q4 | LED Spur1 Gruen 2 | unten rechts |
+| Q5-Q7 | Reserve | - |
 
-### ESP32-CAM zu PCF8574
-| Funktion | ESP32-CAM Pin |
-|---|---|
-| I2C SDA | GPIO4 |
-| I2C SCL | GPIO2 |
-
-### Boot-Strapping Hinweise
-- GPIO0 unbenutzt lassen (nur fuer Flash-Modus)
-- GPIO15 mit 10k Pulldown stabilisieren
+### 74HC595_2 Ausgaenge (Spur 2)
+| Ausgang | Funktion | Position |
+|---|---|---|
+| Q0 | LED Spur2 Rot 1 | oben links |
+| Q1 | LED Spur2 Rot 2 | oben rechts |
+| Q2 | LED Spur2 Gelb | Mitte unten |
+| Q3 | LED Spur2 Gruen 1 | unten links |
+| Q4 | LED Spur2 Gruen 2 | unten rechts |
+| Q5-Q7 | Reserve | -0k Pulldown stabilisieren
 - GPIO2 darf beim Boot nicht auf LOW gezogen werden
 - GPIO12 nicht fuer Leitungen mit Pullup nutzen
 
 ## Funktionszuordnung ueber I/O-Erweiterung
 
-### 74HC595 Ausgaenge
-| Ausgang | Funktion |
-|---|---|
-| Q0 | LED Spur1 Rot |
-| Q1 | LED Spur1 Gelb |
-| Q2 | LED Spur1 Gruen |
-| Q3 | LED Spur2 Rot |
-| Q4 | LED Spur2 Gelb |
-| Q5 | LED Spur2 Gruen |
-| Q6 | Reserve |
-| Q7 | Reserve |
+### 74HC595 Ausgaenge, Dual 74HC595)
 
-### PCF8574 Eingaenge
-| Port | Funktion |
-|---|---|
-| P0 | Button Start |
-| P1 | Button Stop |
+```text
+5V ----+-------------------------- ESP32-CAM 5V
+       |
+       +--[100uF]-- GND
+
+GPIO13 ---> 74HC595_1 DS
+GPIO14 ---> 74HC595_1/74HC595_2 SHCP (gemeinsam)
+GPIO15 ---> 74HC595_1/74HC595_2 STCP (gemeinsam)
+
+74HC595_1 QH' ---> 74HC595_2 DS (Verkettung)
+
+74HC595_1 Q0 ---[330R]---|>|--- GND   (LED L1 Rot 1)
+74HC595_1 Q1 ---[330R]---|>|--- GND   (LED L1 Rot 2)
+74HC595_1 Q2 ---[330R]---|>|--- GND   (LED L1 Gelb - Mitte oben)
+74HC595_1 Q3 ---[330R]---|>|--- GND   (LED L1 Gruen 1)
+74HC595_1 Q4 ---[330R]---|>|--- GND   (LED L1 Gruen 2)
+
+74HC595_2 Q0 ---[330R]---|>|--- GND   (LED L2 Rot 1)
+74HC595_2 Q1 ---[330R]---|>|--- GND   (LED L2 Rot 2)
+74HC595_2 Q2 ---[330R]---|>|--- GND   (LED L2 Gelb - Mitte unten)
+74HC595_2 Q3 ---[330R]---|>|--- GND   (LED L2 Gruen 1)
+74HC595_2 Q4 ---[330R]---|>|--- GND   (LED L2 Gruen 2
 | P2 | Button Reset |
 | P3 | Button Mode |
 | P4 | Trigger Start extern |
