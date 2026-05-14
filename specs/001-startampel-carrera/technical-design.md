@@ -83,14 +83,24 @@ Dieses Dokument beschreibt das technische Design fuer alle MVP-Features aus `spe
 - Ungueltige Spur-ID: Event verwerfen, Fehlerzaehler inkrementieren
 
 ## Pin- und Hardware-Design (logisch)
-Wegen Pin-Konflikten wird die nachfolgende Standardzuordnung fuer D1 Mini festgelegt:
-- Spur 1: D1 (R), D2 (Y), D3 (G)
-- Spur 2: D4 (R), D5 (Y), D6 (G)
-- Buttons: D7 (Start), D8 (Stop), RX (Reset), TX (Mode)
-- Externe Trigger: A0 (Start extern), D0 (Fruehstart extern)
-- IR-Schranke: D0 ODER eigener freier GPIO (bei ESP32 dediziert)
+Fuer ESP32-CAM wird eine I/O-Erweiterung eingesetzt, da die direkt verfuegbaren GPIOs fuer alle MVP-Signale nicht ausreichen.
 
-Hinweis: D8 darf nicht gleichzeitig fuer Stop und IR genutzt werden.
+### ESP32-CAM direkt genutzte Pins
+- GPIO13: 74HC595 DS (LED-Daten)
+- GPIO14: 74HC595 SHCP (LED-Takt)
+- GPIO15: 74HC595 STCP (LED-Latch)
+- GPIO4: I2C SDA zu PCF8574
+- GPIO2: I2C SCL zu PCF8574
+
+### I/O-Erweiterung
+- 74HC595: 6 LED-Kanaele + 2 Reservekanaele
+- PCF8574: 4 Buttons + 2 externe Trigger + 1 IR-Eingang + 1 Reserve
+
+### Boot-Strapping Randbedingungen
+- GPIO0 bleibt unbenutzt (nur Flash-Modus)
+- GPIO15 mit Pulldown stabilisieren
+- GPIO2 darf waehrend Boot nicht auf LOW gezogen werden
+- GPIO12 nicht fuer Pullup-belastete Signale nutzen
 
 ## Testdesign
 - Unit-Tests pro Modul (`InputHandler`, `LedController`, `StateMachine`, `AmpelController`)

@@ -1,16 +1,19 @@
 # Schaltplan: Startampel MVP (Feature 001)
 
 ## Zielbild
-Elektrische Verdrahtung fuer 2 Spuren (erweiterbar auf 4), ausgelegt fuer D1 Mini (ESP8266) und alternativ ESP32.
+Elektrische Verdrahtung fuer 2 Spuren (erweiterbar), mit ESP32-CAM als Computing Unit.
 
 ## Komponentenliste
-- 1x D1 Mini (ESP8266) oder ESP32 Dev Board
+- 1x ESP32-CAM (AI Thinker)
+- 1x 74HC595 (8 digitale Ausgaenge fuer LED-Kanaele)
+- 1x PCF8574/PCF8574A (8 digitale Eingaenge fuer Taster/Trigger/IR)
 - 10 LED-Plaetze gesamt (6 aktiv + 4 Reserve), Farben Rot/Gelb/Gruen
-- 6x Vorwiderstand 220-470 Ohm
+- 6x Vorwiderstand 220-470 Ohm (empfohlen 330 Ohm)
 - 4x Taster (Start, Stop, Reset, Mode)
 - 1x IR-Lichtschranke (Digitalausgang)
 - Breadboard + Jumperkabel
 - Optional: 100 uF Elko zwischen 5V und GND
+- Optional: 2x 100 nF (je 1x fuer 74HC595 und PCF8574 nah am IC)
 
 ## Verfuegbarer Bestand (13.05.2026)
 - 2x ESP32-CAM
@@ -30,71 +33,92 @@ Abgeleitete Nutzung:
 ## Schaltregeln
 - Jede LED in Serie mit eigenem Vorwiderstand
 - Gemeinsame Masse (Common GND) fuer alle Komponenten
-- Buttons als `INPUT_PULLUP` gegen GND
+- Eingaenge active-low gegen GND schalten
 - Externe Trigger galvanisch sauber an GND-Referenz binden
+- 74HC595 und PCF8574 auf 3V3 betreiben
 
-## D1 Mini Pinbelegung (Normativ)
-| Funktion | Pin |
+## ESP32-CAM Pinbelegung (Normativ)
+
+### ESP32-CAM zu 74HC595
+| Funktion | ESP32-CAM Pin |
 |---|---|
-| LED Spur1 Rot | D1 |
-| LED Spur1 Gelb | D2 |
-| LED Spur1 Gruen | D3 |
-| LED Spur2 Rot | D4 |
-| LED Spur2 Gelb | D5 |
-| LED Spur2 Gruen | D6 |
-| Button Start | D7 |
-| Button Stop | D8 |
-| Button Reset | RX |
-| Button Mode | TX |
-| Trigger Start extern | A0 |
-| Trigger Fruehstart extern | D0 |
-| IR-Schranke | D0 (geteilt) oder separater GPIO |
+| DS (Daten) | GPIO13 |
+| SHCP (Takt) | GPIO14 |
+| STCP (Latch) | GPIO15 |
 
-Hinweis: Fuer stabile Fruehstart-Erkennung wird ein dedizierter IR-Pin empfohlen. Beim D1 Mini ist die GPIO-Anzahl begrenzt.
-
-## ESP32 Pinbelegung (Empfohlen)
-| Funktion | Pin |
+### ESP32-CAM zu PCF8574
+| Funktion | ESP32-CAM Pin |
 |---|---|
-| LED Spur1 Rot | 16 |
-| LED Spur1 Gelb | 17 |
-| LED Spur1 Gruen | 18 |
-| LED Spur2 Rot | 19 |
-| LED Spur2 Gelb | 21 |
-| LED Spur2 Gruen | 22 |
-| Button Start | 23 |
-| Button Stop | 25 |
-| Button Reset | 26 |
-| Button Mode | 27 |
-| Trigger Start extern | 32 |
-| IR-Schranke | 33 |
+| I2C SDA | GPIO4 |
+| I2C SCL | GPIO2 |
+
+### Boot-Strapping Hinweise
+- GPIO0 unbenutzt lassen (nur fuer Flash-Modus)
+- GPIO15 mit 10k Pulldown stabilisieren
+- GPIO2 darf beim Boot nicht auf LOW gezogen werden
+- GPIO12 nicht fuer Leitungen mit Pullup nutzen
+
+## Funktionszuordnung ueber I/O-Erweiterung
+
+### 74HC595 Ausgaenge
+| Ausgang | Funktion |
+|---|---|
+| Q0 | LED Spur1 Rot |
+| Q1 | LED Spur1 Gelb |
+| Q2 | LED Spur1 Gruen |
+| Q3 | LED Spur2 Rot |
+| Q4 | LED Spur2 Gelb |
+| Q5 | LED Spur2 Gruen |
+| Q6 | Reserve |
+| Q7 | Reserve |
+
+### PCF8574 Eingaenge
+| Port | Funktion |
+|---|---|
+| P0 | Button Start |
+| P1 | Button Stop |
+| P2 | Button Reset |
+| P3 | Button Mode |
+| P4 | Trigger Start extern |
+| P5 | Trigger Fruehstart extern |
+| P6 | IR-Schranke OUT |
+| P7 | Reserve |
 
 ## ASCII-Schaltplan (logisch)
 
 ```text
-5V ----+-------------------------- MCU VCC
+5V ----+-------------------------- ESP32-CAM 5V
        |
        +--[100uF]-- GND
 
-D1 ----[220R]----|>|---- GND   (LED L1 Rot)
-D2 ----[220R]----|>|---- GND   (LED L1 Gelb)
-D3 ----[220R]----|>|---- GND   (LED L1 Gruen)
-D4 ----[220R]----|>|---- GND   (LED L2 Rot)
-D5 ----[220R]----|>|---- GND   (LED L2 Gelb)
-D6 ----[220R]----|>|---- GND   (LED L2 Gruen)
+GPIO13 ---> 74HC595 DS
+GPIO14 ---> 74HC595 SHCP
+GPIO15 ---> 74HC595 STCP
 
-D7 ----[Button START]---- GND
-D8 ----[Button STOP ]---- GND
-RX ----[Button RESET]---- GND
-TX ----[Button MODE ]---- GND
+74HC595 Q0 ---[330R]---|>|--- GND   (LED L1 Rot)
+74HC595 Q1 ---[330R]---|>|--- GND   (LED L1 Gelb)
+74HC595 Q2 ---[330R]---|>|--- GND   (LED L1 Gruen)
+74HC595 Q3 ---[330R]---|>|--- GND   (LED L2 Rot)
+74HC595 Q4 ---[330R]---|>|--- GND   (LED L2 Gelb)
+74HC595 Q5 ---[330R]---|>|--- GND   (LED L2 Gruen)
 
-A0 ----[Extern START ]--- GND
-D0 ----[Extern FALSE ]--- GND
-D0 ----[IR SENSOR OUT]--- (Digital)
-IR VCC ------------------- 5V
+GPIO4  <--> PCF8574 SDA
+GPIO2  ---> PCF8574 SCL
+
+PCF8574 P0 ----[Button START]---- GND
+PCF8574 P1 ----[Button STOP ]---- GND
+PCF8574 P2 ----[Button RESET]---- GND
+PCF8574 P3 ----[Button MODE ]---- GND
+
+PCF8574 P4 ----[Extern START ]--- GND
+PCF8574 P5 ----[Extern FALSE ]--- GND
+PCF8574 P6 ----[IR SENSOR OUT]--- (Digital)
+IR VCC ------------------- 3V3
 IR GND ------------------- GND
 ```
 
 ## Validierungscheckliste
+- Boot-Test: 10x Power-Cycle ohne Boot-Fehler
 - LED-Test: jede LED einzeln ansteuerbar
 - Taster-Test: stabile Flankenerkennung ohne Doppeltrigger
 - IR-Test: Trigger nur bei Strahlunterbrechung
