@@ -5,40 +5,56 @@ Vollstaendige Verdrahtung fuer den MVP mit ESP32-CAM als Recheneinheit, inklusiv
 
 ## Warum I/O-Erweiterung notwendig ist
 Der ESP32-CAM hat nur wenige frei nutzbare GPIOs. Fuer den MVP werden gleichzeitig benoetigt:
-- 6 LED-Ausgaenge (2 Spuren x Rot/Gelb/Gruen)
+- 10 LED-Ausgaenge (2 Spuren: je 2 Rot + 1 Gelb + 2 Gruen + 2 Reserven)
 - 4 Taster (Start, Stop, Reset, Mode)
 - 2 externe Trigger (Start, Fruehstart)
 - 1 IR-Sensor-Eingang
 
-Das sind 13 Signale und damit mehr als direkt verfuegbare sichere Pins. Daher wird die Verdrahtung mit:
-- 1x 74HC595 (8 Ausgaenge fuer LEDs)
+Das erfordert 17 Signale, daher wird die Verdrahtung mit:
+- 2x 74HC595 (16 Ausgaenge fuer LEDs in Serie geschaltet)
 - 1x PCF8574 (8 Eingaenge fuer Taster/Trigger/IR)
 umgesetzt.
 
 ## Komponenten
 - 1x ESP32-CAM (AI Thinker)
-- 1x 74HC595 (LED-Ausgaenge)
+- 2x 74HC595 (LED-Ausgaenge, in Serie geschaltet)
 - 1x PCF8574 oder PCF8574A (Eingaenge)
-- 6x LED (Rot/Gelb/Gruen x 2 Spuren) + 4 Reserve
-- 6x Vorwiderstand 220-470 Ohm (empfohlen 330 Ohm)
+- 10x LED (4x rot + 2x gelb + 4x gruen)
+- 10x Vorwiderstand 330 Ohm (pro LED)
 - 4x KY-004 Tastermodul
 - 1x IR-Lichtschranke mit Digitalausgang
 - 1x Elko 100 uF zwischen 5V und GND
-- Optional: 2x 100 nF (je einer nahe 74HC595/PCF8574)
+- Optional: 3x 100 nF (je einer nahe 74HC595_1/74HC595_2/PCF8574)
 
 ## Versorgungsplan
-- ESP32-CAM an 5V (Pin 5V), nicht an 3V3 versorgen
-- 74HC595 und PCF8574 auf 3V3 betreiben (logiksicher zum ESP32)
-- Alle GND strikt gemeinsam verbinden (ESP32-CAM, 74HC595, PCF8574, Taster, IR)
+
+### ⚠️ Kritisch: Richtige Stromversorgung am ESP32-CAM
+
+Der ESP32-CAM hat **zwei verschiedene Spannungen**. Falscher Anschluss zerstört das Board sofort!
+
+| Pin | Spannung | Verbindung | ⚠️ Warnung |
+|---|---|---|---|
+| **5V** | 5V Input | USB/Netzteil 5V | ✓ **Richtig** |
+| **GND** | 0V Masse | USB/Netzteil GND | ✓ **Richtig** |
+| **VCC/3V3** | 3.3V Output | 74HC595, PCF8574 | ✓ **Nur für externe ICs** |
+| ❌ VCC als Input | - | **NICHT** 5V anschließen | 🔥 Zerstört ESP32-CAM |
+
+**Verdrahtung Stromversorgung:**
+1. USB 5V oder Netzteil 5V → ESP32-CAM **5V Pin**
+2. USB GND oder Netzteil GND → ESP32-CAM **GND Pin** (gemeinsam mit allem)
+3. ESP32-CAM **3V3 Pin** → 74HC595_1 VCC
+4. ESP32-CAM **3V3 Pin** → 74HC595_2 VCC
+5. ESP32-CAM **3V3 Pin** → PCF8574 VCC
+6. Alle GND strikt gemeinsam: ESP32-CAM GND, 74HC595 GND, PCF8574 GND, LEDs, Taster
 
 ## ESP32-CAM Pinzuordnung
 
-### Direkt am ESP32-CAM
+### Direkt am ESP32-CAM (für beide 74HC595 in Serie)
 | Funktion | ESP32-CAM Pin |
 |---|---|
-| Schieberegister Daten | GPIO13 |
-| Schieberegister Takt | GPIO14 |
-| Schieberegister Latch | GPIO15 |
+| Schieberegister Daten (DS) | GPIO13 |
+| Schieberegister Takt (SHCP) | GPIO14 |
+| Schieberegister Latch (STCP) | GPIO15 |
 | I2C SCL (PCF8574) | GPIO2 |
 | I2C SDA (PCF8574) | GPIO4 |
 
@@ -48,12 +64,24 @@ umgesetzt.
 - GPIO2 muss beim Boot HIGH bleiben; I2C-Pullup auf 3V3 ist daher korrekt.
 - GPIO12 nicht fuer Signale mit externem Pullup verwenden.
 
-## 74HC595 Verdrahtung (LED-Ausgaenge)
+## 74HC595 Verdrahtung (LED-Ausgaenge, zwei ICs in Serie)
 
-### 74HC595 zu ESP32-CAM
-| 74HC595 Pin | Verbindung |
+### 74HC595_1 (erster IC, Spur 1) zu ESP32-CAM
+| 74HC595_1 Pin | Verbindung |
 |---|---|
 | DS (14) | GPIO13 |
+| SHCP (11) | GPIO14 |
+| STCP (12) | GPIO15 |
+| QH' (9) | 74HC595_2 DS (14) |
+| OE (13) | GND |
+| MR (10) | 3V3 |
+| VCC (16) | 3V3 |
+| GND (8) | GND |
+
+### 74HC595_2 (zweiter IC, Spur 2) zu 74HC595_1
+| 74HC595_2 Pin | Verbindung |
+|---|---|
+| DS (14) | 74HC595_1 QH' (9) |
 | SHCP (11) | GPIO14 |
 | STCP (12) | GPIO15 |
 | OE (13) | GND |
@@ -61,20 +89,34 @@ umgesetzt.
 | VCC (16) | 3V3 |
 | GND (8) | GND |
 
-### 74HC595 LED-Kanaele
+### 74HC595 LED-Kanaele (Bit-Reihenfolge, MSB → LSB)
+
+**74HC595_1 Ausgaenge (Q0-Q7 fuer Spur 1)**
 | Ausgang | Funktion |
 |---|---|
-| Q0 | LED Spur1 Rot |
-| Q1 | LED Spur1 Gelb |
-| Q2 | LED Spur1 Gruen |
-| Q3 | LED Spur2 Rot |
-| Q4 | LED Spur2 Gelb |
-| Q5 | LED Spur2 Gruen |
-| Q6 | Reserve LED 1 |
-| Q7 | Reserve LED 2 |
+| Q0 | LED Spur1 Rot 1 (oben links) |
+| Q1 | LED Spur1 Rot 2 (oben rechts) |
+| Q2 | LED Spur1 Gelb (Mitte oben) |
+| Q3 | LED Spur1 Gruen 1 (unten links) |
+| Q4 | LED Spur1 Gruen 2 (unten rechts) |
+| Q5 | Reserve 1 |
+| Q6 | Reserve 2 |
+| Q7 | Reserve 3 |
 
-LED-Verdrahtung je Kanal:
-74HC595 Qx -> Vorwiderstand 330 Ohm -> LED Anode, LED Kathode -> GND
+**74HC595_2 Ausgaenge (Q0-Q7 fuer Spur 2)**
+| Ausgang | Funktion |
+|---|---|
+| Q0 | LED Spur2 Rot 1 (oben links) |
+| Q1 | LED Spur2 Rot 2 (oben rechts) |
+| Q2 | LED Spur2 Gelb (Mitte unten) |
+| Q3 | LED Spur2 Gruen 1 (unten links) |
+| Q4 | LED Spur2 Gruen 2 (unten rechts) |
+| Q5 | Reserve 4 |
+| Q6 | Reserve 5 |
+| Q7 | Reserve 6 |
+
+LED-Verdrahtung je Kanal (alle 10 LEDs gleich):
+74HC595_n Qx -> Vorwiderstand 330 Ohm -> LED Anode, LED Kathode -> GND
 
 ## PCF8574 Verdrahtung (Eingaenge)
 

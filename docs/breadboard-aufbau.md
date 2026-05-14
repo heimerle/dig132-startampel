@@ -67,29 +67,33 @@
 
 ### Phase 1: Stromversorgung (Reihen 1-4)
 
+**⚠️ WARNUNG: ESP32-CAM hat ZWEI verschiedene Spannungen!**
+
 ```
-Stromschiene oben links:
+Externe Stromquelle (USB oder Netzteil):
+5V  ──→ ESP32-CAM "5V" Pin (NICHT an VCC!)
+GND ──→ ESP32-CAM "GND" Pin
 
-Spalte a (von oben nach unten):
-┌─────────────┐
-│ +5V Rail    │ Row 1  ← USB 5V oder Netzteil 5V
-│  │ │ │      │ Row 2  ← [100µF Elko] zum GND
-│  │ │ │      │ Row 3  ← verfügbar
-│  │ │ │      │ Row 4  ← verfügbar
-│  │ │ │      │
-└─────────────┘
+         ↓
+    [100µF Kondensator]  (zur Glättung)
+         ↓
+       GND
 
-Spalte b (GND Rail):
-┌─────────────┐
-│ GND Rail    │ Row 1  ← USB GND / Netzteil GND
-│  │ │ │      │ Row 2  ← [100µF Elko] vom +5V
-│  │ │ │      │ Row 3  ← verfügbar
-│  │ │ │      │ Row 4  ← verfügbar
-│  │ │ │      │
-└─────────────┘
+       ↓ (intern reguliert auf 3.3V)
 
-Beide Stromschienen durchgehend!
-```
+ESP32-CAM "3V3" Output ──→ 74HC595_1 VCC
+ESP32-CAM "3V3" Output ──→ 74HC595_2 VCC
+ESP32-CAM "3V3" Output ──→ PCF8574 VCC
+
+         ✓ RICHTIG:
+         ├─ 5V an "5V" Pin
+         ├─ 3V3 an externe ICs
+         └─ Alle GND gemeinsam
+
+         ❌ FALSCH (zerstört ESP32-CAM):
+         ├─ 5V an "VCC" oder "3V3"
+         ├─ Mehrere GND-Punkte
+         └─ I2C Pullups auf 5V
 
 ### Phase 2: ESP32-CAM Platzierung (Reihen 5-7)
 
@@ -101,15 +105,22 @@ Platziere ESP32-CAM mit Breite über Reihentrennsteg:
  +5V GND |         |         |         |
 ─────────┼─────────┼─────────┼─────────┼─────────
   1  2   | 3 (GND) | 4       | 5       | 6
-GND 5V   |GPIO13   |GPIO14   |GPIO15   |GPIO4
-─────────┼─────────┼─────────┼─────────┼─────────
-  7      | 8       | 9       | 10 (GPIO2)
-GPIO?    | ...     | ...     | ...
-─────────┴─────────┴─────────┴─────────┴─────────
+GND 5V ← | ← GPIO13│GPIO14  │GPIO15  │GPIO4
+(aus     │(DS)    │(SHCP)  │(STCP)  │(SDA)
+Netzteil)└────────┴────────┴────────┘
+│                   │
+└─── ⚠️ Pin "5V" (NICHT VCC!)
+      ← ⚠️ Pin "GND" (gemeinsam mit allem)
 
-Verbindungen:
-- Pin GND des ESP32-CAM → Spalte 3 → dann zu GND Rail (Spalte b)
-- Pin 5V des ESP32-CAM → Spalte 2 → dann zu +5V Rail (Spalte a)
+         │ GPIO2 (SCL) - Row 7
+         └────→ zum PCF8574
+
+Stromverbindungen ESP32-CAM:
+- GND Pin (Row 1, Spalte a) → GND Rail (durchgehend zu allen ICs)
+- 5V Pin (Row 2, Spalte a)  → +5V Rail (5V von USB/Netzteil)
+- 3V3 Pin (Row 3/4)         → +3V3 Rail (zu 74HC595 x2, PCF8574)
+
+Nicht verwechseln: 5V Pin ≠ VCC Pin!
 ```
 
 ### Phase 3: 74HC595_1 (Spur 1, Reihen 9-12)
